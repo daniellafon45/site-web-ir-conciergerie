@@ -1,0 +1,71 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Nunito", sans-serif;
+  --font-body: "Nunito", sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-page-bg: var(--page-bg);
+  --color-panel-bg: var(--panel-bg);
+  --color-soft-card: var(--soft-card);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-muted-light: var(--muted-light);
+  --color-line: var(--line);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-primary: var(--brand-primary);
+  --color-primary-foreground: oklch(1 0 0);
+  --color-border: var(--line);
+}
+
+:root {
+  --background: oklch(0.984 0.005 247);
+  --foreground: oklch(0.18 0.04 264);
+  --page-bg: oklch(0.984 0.005 247);
+  --panel-bg: oklch(0.961 0.011 247);
+  --soft-card: oklch(0.901 0.018 247);
+  --text: oklch(0.18 0.04 264);
+  --muted: oklch(0.47 0.03 257);
+  --muted-light: oklch(0.68 0.03 257);
+  --line: oklch(0.84 0.02 247);
+  --brand-primary: oklch(0.36 0.14 265);
+  --brand-secondary: oklch(0.82 0.07 270);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+  html, body {
+    background-color: var(--color-page-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: var(--color-brand-primary);
+    color: white;
+  }
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+.text-balance { text-wrap: balance; }
+
+html {
+  scroll-behavior: smooth;
+}
