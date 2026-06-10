@@ -309,7 +309,8 @@ function SoumissionPage() {
               Merci, {form.firstName || "à très bientôt"}.
             </h1>
             <p className="text-muted text-lg max-w-md mx-auto mb-10">
-              Votre demande a bien été reçue. Notre équipe revient vers vous sous 24 heures avec une proposition sur mesure.
+              Votre demande a bien été transmise à notre équipe. Nous revenons vers vous sous 24&nbsp;heures à l'adresse{" "}
+              <strong className="text-text">{form.email}</strong>.
             </p>
             <Link
               to="/"

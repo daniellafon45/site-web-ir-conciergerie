@@ -1,6 +1,6 @@
 import { getEmailEnv } from "./env.server";
 import { isCloudflareWorkersRuntime } from "./runtime.server";
-import { SOUMISSION_RECIPIENT } from "./soumission.constants";
+import { SOUMISSION_RECIPIENTS } from "./soumission.constants";
 
 export type SoumissionEmailErrorCode = "smtp_config" | "smtp_send";
 
@@ -96,7 +96,7 @@ async function sendViaResend(
     },
     body: JSON.stringify({
       from,
-      to: [SOUMISSION_RECIPIENT],
+      to: [...SOUMISSION_RECIPIENTS],
       reply_to: data.email,
       subject,
       html,
@@ -172,7 +172,7 @@ async function sendViaSmtp(data: SoumissionEmailPayload, emailEnv: Record<string
   try {
     await transport.sendMail({
       from,
-      to: SOUMISSION_RECIPIENT,
+      to: SOUMISSION_RECIPIENTS.join(", "),
       replyTo: data.email,
       subject,
       html,

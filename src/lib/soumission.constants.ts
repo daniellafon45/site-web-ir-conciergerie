@@ -1,4 +1,10 @@
-export const SOUMISSION_RECIPIENT = "direction@ir-immigration.com";
+/** Destinataires des soumissions (site IR Conciergerie). */
+export const SOUMISSION_RECIPIENTS = [
+  "conciergerie@ir-immigration.com",
+  "direction@ir-immigration.com",
+] as const;
+
+export const SOUMISSION_RECIPIENT = SOUMISSION_RECIPIENTS[0];
 
 export const SERVICES = [
   { id: "transfert", title: "Transfert aéroport", desc: "Accueil et transfert privé dès votre atterrissage.", icon: "flight_land" },
