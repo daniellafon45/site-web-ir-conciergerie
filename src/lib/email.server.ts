@@ -106,6 +106,16 @@ async function sendViaResend(
   if (!response.ok) {
     const details = await response.text();
     console.error("Échec Resend:", response.status, details);
+
+    if (response.status === 401 || response.status === 403) {
+      throw new SoumissionEmailError(
+        "smtp_config",
+        response.status === 401
+          ? "Clé API Resend invalide. Regénérez-la sur resend.com et mettez à jour Cloudflare."
+          : "Domaine non autorisé sur Resend. Vérifiez ir-immigration.com dans Resend → Domains.",
+      );
+    }
+
     throw new SoumissionEmailError(
       "smtp_send",
       "Envoi du courriel impossible via Resend.",
