@@ -1,13 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const SMTP_KEYS = [
+const EMAIL_KEYS = [
   "SMTP_HOST",
   "SMTP_USER",
   "SMTP_PASS",
   "SMTP_PORT",
   "SMTP_SECURE",
   "EMAIL_FROM",
+  "RESEND_API_KEY",
 ] as const;
 
 function unquote(value: string): string {
@@ -42,37 +43,50 @@ function parseEnvFile(envPath: string): Record<string, string> {
 }
 
 function findEnvFilePath(): string | null {
-  const candidates = [
-    path.resolve(process.cwd(), ".env"),
-    path.resolve(process.cwd(), "creative-showcase-app-main", ".env"),
-  ];
+  try {
+    const candidates = [
+      path.resolve(process.cwd(), ".env"),
+      path.resolve(process.cwd(), "creative-showcase-app-main", ".env"),
+    ];
 
-  return candidates.find((envPath) => fs.existsSync(envPath)) ?? null;
+    return candidates.find((envPath) => fs.existsSync(envPath)) ?? null;
+  } catch {
+    return null;
+  }
 }
 
-/** Lit la config SMTP en priorisant le fichier .env local sur process.env. */
-export function getSmtpEnv(): Record<string, string> {
+/** Lit la config email : process.env (Cloudflare) puis .env local en dev. */
+export function getEmailEnv(): Record<string, string> {
   const env: Record<string, string> = {};
 
-  for (const key of SMTP_KEYS) {
+  for (const key of EMAIL_KEYS) {
     if (process.env[key]) env[key] = process.env[key]!;
   }
 
   const envPath = findEnvFilePath();
   if (envPath) {
-    const fileEnv = parseEnvFile(envPath);
-    for (const key of SMTP_KEYS) {
-      if (fileEnv[key]) env[key] = fileEnv[key];
+    try {
+      const fileEnv = parseEnvFile(envPath);
+      for (const key of EMAIL_KEYS) {
+        if (fileEnv[key]) env[key] = fileEnv[key];
+      }
+    } catch {
+      // Workers : pas de lecture .env sur le filesystem.
     }
   }
 
   return env;
 }
 
-/** @deprecated Utiliser getSmtpEnv() */
+/** @deprecated Utiliser getEmailEnv() */
+export function getSmtpEnv(): Record<string, string> {
+  return getEmailEnv();
+}
+
+/** @deprecated Utiliser getEmailEnv() */
 export function ensureEnvLoaded(): void {
-  const smtpEnv = getSmtpEnv();
-  for (const [key, value] of Object.entries(smtpEnv)) {
+  const emailEnv = getEmailEnv();
+  for (const [key, value] of Object.entries(emailEnv)) {
     process.env[key] = value;
   }
 }

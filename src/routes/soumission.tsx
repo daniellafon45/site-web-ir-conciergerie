@@ -23,8 +23,8 @@ const STEPS = ["Vos services", "Vos informations", "Détails du projet"];
 function getSubmitErrorMessage(code: SoumissionEmailErrorCode): string {
   if (code === "smtp_config") {
     return import.meta.env.DEV
-      ? "Configuration email incomplète — renseignez SMTP_PASS dans le fichier .env puis redémarrez le serveur."
-      : "Impossible d'envoyer votre demande pour le moment. Veuillez nous contacter directement.";
+      ? "Configuration email incomplète — renseignez SMTP_PASS ou RESEND_API_KEY dans .env puis redémarrez le serveur."
+      : "Impossible d'envoyer votre demande pour le moment. Veuillez nous contacter directement à direction@ir-immigration.com.";
   }
 
   if (code === "smtp_send" && import.meta.env.DEV) {

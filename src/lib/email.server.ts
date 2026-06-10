@@ -1,6 +1,5 @@
-import nodemailer from "nodemailer";
-
-import { getSmtpEnv } from "./env.server";
+import { getEmailEnv } from "./env.server";
+import { isCloudflareWorkersRuntime } from "./runtime.server";
 import { SOUMISSION_RECIPIENT } from "./soumission.constants";
 
 export type SoumissionEmailErrorCode = "smtp_config" | "smtp_send";
@@ -65,15 +64,65 @@ function buildSoumissionEmailHtml(data: SoumissionEmailPayload): string {
   `.trim();
 }
 
-function getSmtpConfig() {
-  const smtpEnv = getSmtpEnv();
+function getFromAddress(emailEnv: Record<string, string>): string {
+  return emailEnv.EMAIL_FROM ?? "IR Conciergerie <conciergerie@ir-immigration.com>";
+}
 
-  const host = smtpEnv.SMTP_HOST;
-  const user = smtpEnv.SMTP_USER;
-  const pass = smtpEnv.SMTP_PASS?.trim();
-  const port = Number(smtpEnv.SMTP_PORT ?? 465);
-  const secure = smtpEnv.SMTP_SECURE !== "false";
-  const from = smtpEnv.EMAIL_FROM ?? "IR Conciergerie <direction@ir-immigration.com>";
+function shouldUseResend(emailEnv: Record<string, string>): boolean {
+  return isCloudflareWorkersRuntime() || Boolean(emailEnv.RESEND_API_KEY?.trim());
+}
+
+async function sendViaResend(
+  data: SoumissionEmailPayload,
+  emailEnv: Record<string, string>,
+): Promise<void> {
+  const apiKey = emailEnv.RESEND_API_KEY?.trim();
+  if (!apiKey) {
+    throw new SoumissionEmailError(
+      "smtp_config",
+      "RESEND_API_KEY manquant. Ajoutez-le dans Cloudflare Pages → Environment variables (Production).",
+    );
+  }
+
+  const subject = `Récapitulatif soumission — ${data.firstName} ${data.lastName}`;
+  const html = buildSoumissionEmailHtml(data);
+  const from = getFromAddress(emailEnv);
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from,
+      to: [SOUMISSION_RECIPIENT],
+      reply_to: data.email,
+      subject,
+      html,
+    }),
+  });
+
+  if (!response.ok) {
+    const details = await response.text();
+    console.error("Échec Resend:", response.status, details);
+    throw new SoumissionEmailError(
+      "smtp_send",
+      "Envoi du courriel impossible via Resend.",
+      { cause: new Error(details) },
+    );
+  }
+}
+
+async function sendViaSmtp(data: SoumissionEmailPayload, emailEnv: Record<string, string>): Promise<void> {
+  const nodemailer = (await import("nodemailer")).default;
+
+  const host = emailEnv.SMTP_HOST;
+  const user = emailEnv.SMTP_USER;
+  const pass = emailEnv.SMTP_PASS?.trim();
+  const port = Number(emailEnv.SMTP_PORT ?? 465);
+  const secure = emailEnv.SMTP_SECURE !== "false";
+  const from = getFromAddress(emailEnv);
 
   if (!host || !user || !pass) {
     throw new SoumissionEmailError(
@@ -89,11 +138,6 @@ function getSmtpConfig() {
     );
   }
 
-  return { host, port, secure, user, pass, from };
-}
-
-export async function sendSoumissionEmail(data: SoumissionEmailPayload): Promise<void> {
-  const { host, port, secure, user, pass, from } = getSmtpConfig();
   const subject = `Récapitulatif soumission — ${data.firstName} ${data.lastName}`;
   const html = buildSoumissionEmailHtml(data);
 
@@ -131,4 +175,15 @@ export async function sendSoumissionEmail(data: SoumissionEmailPayload): Promise
       { cause: error },
     );
   }
+}
+
+export async function sendSoumissionEmail(data: SoumissionEmailPayload): Promise<void> {
+  const emailEnv = getEmailEnv();
+
+  if (shouldUseResend(emailEnv)) {
+    await sendViaResend(data, emailEnv);
+    return;
+  }
+
+  await sendViaSmtp(data, emailEnv);
 }
