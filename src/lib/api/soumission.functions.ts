@@ -23,15 +23,20 @@ const soumissionSchema = z.object({
 
 export type SoumissionResult =
   | { success: true }
-  | { success: false; code: SoumissionEmailErrorCode };
+  | { success: false; code: SoumissionEmailErrorCode | "validation" };
 
-export const submitSoumission = createServerFn({ method: "POST" })
-  .validator(soumissionSchema)
-  .handler(async ({ data }): Promise<SoumissionResult> => {
+export const submitSoumission = createServerFn({ method: "POST" }).handler(
+  async ({ data }): Promise<SoumissionResult> => {
+    const parsed = soumissionSchema.safeParse(data);
+    if (!parsed.success) {
+      console.error("Validation soumission:", parsed.error.flatten());
+      return { success: false, code: "validation" };
+    }
+
     try {
       await sendSoumissionEmail({
-        ...data,
-        services: data.services.map(getServiceTitle),
+        ...parsed.data,
+        services: parsed.data.services.map(getServiceTitle),
       });
 
       return { success: true };
@@ -42,10 +47,7 @@ export const submitSoumission = createServerFn({ method: "POST" })
         return { success: false, code: error.code };
       }
 
-      if (error && typeof error === "object" && "issues" in error) {
-        return { success: false, code: "smtp_send" };
-      }
-
       return { success: false, code: "smtp_send" };
     }
-  });
+  },
+);

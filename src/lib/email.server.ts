@@ -145,7 +145,7 @@ async function sendViaResend(
 
   const subject = `Récapitulatif soumission — ${data.firstName} ${data.lastName}`;
   const html = buildSoumissionEmailHtml(data);
-  const from = parseFromAddress(emailEnv);
+  const from = getFromAddressString(parseFromAddress(emailEnv));
   const replyTo = data.email.trim();
 
   const response = await fetch("https://api.resend.com/emails", {
@@ -158,7 +158,7 @@ async function sendViaResend(
       from,
       to: [SOUMISSION_RECIPIENT],
       cc: [SOUMISSION_CC],
-      reply_to: replyTo,
+      reply_to: [replyTo],
       subject,
       html,
     }),

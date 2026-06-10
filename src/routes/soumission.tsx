@@ -20,7 +20,11 @@ export const Route = createFileRoute("/soumission")({
 
 const STEPS = ["Vos services", "Vos informations", "Détails du projet"];
 
-function getSubmitErrorMessage(code: SoumissionEmailErrorCode): string {
+function getSubmitErrorMessage(code: SoumissionEmailErrorCode | "validation"): string {
+  if (code === "validation") {
+    return "Vérifiez vos informations (courriel, téléphone, services) et réessayez.";
+  }
+
   if (code === "smtp_config") {
     return import.meta.env.DEV
       ? "Configuration email incomplète — renseignez SMTP_PASS ou RESEND_API_KEY dans .env puis redémarrez le serveur."
