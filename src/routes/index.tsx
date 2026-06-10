@@ -543,8 +543,27 @@ function Index() {
               <ul className="space-y-3 text-white/80">
                 <li>Montréal, QC</li>
                 <li>
-                  <a href="mailto:conciergerie@ir-immigration.com" className="hover:text-white transition-colors">
+                  <span className="block text-[10px] uppercase tracking-wider font-bold text-white/40 mb-1">
+                    IR Conciergerie
+                  </span>
+                  <a href="mailto:conciergerie@ir-immigration.com" className="hover:text-white transition-colors break-all">
                     conciergerie@ir-immigration.com
+                  </a>
+                </li>
+                <li>
+                  <span className="block text-[10px] uppercase tracking-wider font-bold text-white/40 mb-1">
+                    IR Immigration
+                  </span>
+                  <a href="mailto:direction@ir-immigration.com" className="hover:text-white transition-colors break-all">
+                    direction@ir-immigration.com
+                  </a>
+                </li>
+                <li>
+                  <span className="block text-[10px] uppercase tracking-wider font-bold text-white/40 mb-1">
+                    IR Recrutement
+                  </span>
+                  <a href="mailto:recrutement@industriellerh.com" className="hover:text-white transition-colors break-all">
+                    recrutement@industriellerh.com
                   </a>
                 </li>
               </ul>
