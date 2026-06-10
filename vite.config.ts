@@ -16,4 +16,14 @@ export default defineConfig({
     preset: "cloudflare-pages",
     cloudflare: { nodeCompat: true, deployConfig: true },
   },
+  vite: {
+    ssr: {
+      external: ["cloudflare:workers"],
+    },
+    build: {
+      rollupOptions: {
+        external: ["cloudflare:workers"],
+      },
+    },
+  },
 });

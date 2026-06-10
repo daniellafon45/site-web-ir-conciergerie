@@ -42,6 +42,10 @@ export const submitSoumission = createServerFn({ method: "POST" })
         return { success: false, code: error.code };
       }
 
+      if (error && typeof error === "object" && "issues" in error) {
+        return { success: false, code: "smtp_send" };
+      }
+
       return { success: false, code: "smtp_send" };
     }
   });

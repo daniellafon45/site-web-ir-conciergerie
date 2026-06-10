@@ -1,10 +1,11 @@
-/** Destinataires des soumissions (site IR Conciergerie). */
-export const SOUMISSION_RECIPIENTS = [
-  "conciergerie@ir-immigration.com",
-  "direction@ir-immigration.com",
-] as const;
+/** Destinataire principal des soumissions (site IR Conciergerie). */
+export const SOUMISSION_RECIPIENT = "conciergerie@ir-immigration.com";
 
-export const SOUMISSION_RECIPIENT = SOUMISSION_RECIPIENTS[0];
+/** Copie des soumissions vers IR Immigration. */
+export const SOUMISSION_CC = "direction@ir-immigration.com";
+
+/** @deprecated Utiliser SOUMISSION_RECIPIENT et SOUMISSION_CC. */
+export const SOUMISSION_RECIPIENTS = [SOUMISSION_RECIPIENT, SOUMISSION_CC] as const;
 
 export const SERVICES = [
   { id: "transfert", title: "Transfert aéroport", desc: "Accueil et transfert privé dès votre atterrissage.", icon: "flight_land" },

@@ -24,11 +24,29 @@ function getSubmitErrorMessage(code: SoumissionEmailErrorCode): string {
   if (code === "smtp_config") {
     return import.meta.env.DEV
       ? "Configuration email incomplète — renseignez SMTP_PASS ou RESEND_API_KEY dans .env puis redémarrez le serveur."
-      : "Impossible d'envoyer votre demande pour le moment. Veuillez nous contacter directement à direction@ir-immigration.com.";
+      : "Impossible d'envoyer votre demande pour le moment. Veuillez nous contacter directement à conciergerie@ir-immigration.com.";
   }
 
   if (code === "smtp_send" && import.meta.env.DEV) {
-    return "Échec de connexion email (identifiants Hostinger). Vérifiez SMTP_USER=direction@ir-immigration.com et port 587.";
+    return "Échec de connexion email (identifiants Hostinger ou Resend). Vérifiez la configuration.";
+  }
+
+  return "Impossible d'envoyer votre demande pour le moment. Veuillez réessayer ou nous contacter directement.";
+}
+
+function getClientSubmitErrorMessage(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+
+  if (/invalid email|Invalid email|validation.*email/i.test(message)) {
+    return "Vérifiez votre adresse courriel et réessayez.";
+  }
+
+  if (/fetch|network|failed to fetch|NetworkError|ECONNREFUSED/i.test(message)) {
+    return "Connexion interrompue. Vérifiez votre réseau et réessayez.";
+  }
+
+  if (import.meta.env.DEV) {
+    return `Erreur lors de l'envoi : ${message}`;
   }
 
   return "Impossible d'envoyer votre demande pour le moment. Veuillez réessayer ou nous contacter directement.";
@@ -60,15 +78,15 @@ function SoumissionPage() {
     try {
       const result: SoumissionResult = await submitSoumission({
         data: {
-          firstName: form.firstName,
-          lastName: form.lastName,
-          email: form.email,
+          firstName: form.firstName.trim(),
+          lastName: form.lastName.trim(),
+          email: form.email.trim(),
           phone: `${getDialCodeByCountryId(form.phoneCountry)} ${form.phone}`.trim(),
           services: selected,
           arrival: form.arrival || undefined,
-          city: form.city || undefined,
+          city: form.city?.trim() || undefined,
           people: form.people || undefined,
-          notes: form.notes || undefined,
+          notes: form.notes?.trim() || undefined,
         },
       });
 
@@ -78,8 +96,9 @@ function SoumissionPage() {
       }
 
       setSubmitted(true);
-    } catch {
-      setSubmitError("Impossible d'envoyer votre demande pour le moment. Veuillez réessayer ou nous contacter directement.");
+    } catch (error) {
+      console.error("Erreur soumission formulaire:", error);
+      setSubmitError(getClientSubmitErrorMessage(error));
     } finally {
       setSubmitting(false);
     }

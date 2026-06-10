@@ -55,8 +55,7 @@ function findEnvFilePath(): string | null {
   }
 }
 
-/** Lit la config email : process.env (Cloudflare) puis .env local en dev. */
-export function getEmailEnv(): Record<string, string> {
+function readLocalEnv(): Record<string, string> {
   const env: Record<string, string> = {};
 
   for (const key of EMAIL_KEYS) {
@@ -78,12 +77,40 @@ export function getEmailEnv(): Record<string, string> {
   return env;
 }
 
-/** @deprecated Utiliser getEmailEnv() */
+async function readCloudflareEnv(): Promise<Record<string, string>> {
+  const env: Record<string, string> = {};
+
+  try {
+    const { env: cfEnv } = await import("cloudflare:workers");
+    for (const key of EMAIL_KEYS) {
+      const value = cfEnv[key as keyof typeof cfEnv];
+      if (typeof value === "string" && value.trim()) {
+        env[key] = value.trim();
+      }
+    }
+  } catch {
+    // Hors runtime Cloudflare Workers (dev local Node).
+  }
+
+  return env;
+}
+
+/** Lit la config email : .env local → process.env → bindings Cloudflare (priorité). */
+export async function getEmailEnvAsync(): Promise<Record<string, string>> {
+  return { ...readLocalEnv(), ...(await readCloudflareEnv()) };
+}
+
+/** @deprecated Préférer getEmailEnvAsync() pour inclure les bindings Cloudflare. */
+export function getEmailEnv(): Record<string, string> {
+  return readLocalEnv();
+}
+
+/** @deprecated Utiliser getEmailEnvAsync() */
 export function getSmtpEnv(): Record<string, string> {
   return getEmailEnv();
 }
 
-/** @deprecated Utiliser getEmailEnv() */
+/** @deprecated Utiliser getEmailEnvAsync() */
 export function ensureEnvLoaded(): void {
   const emailEnv = getEmailEnv();
   for (const [key, value] of Object.entries(emailEnv)) {

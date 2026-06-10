@@ -1,6 +1,6 @@
-import { getEmailEnv } from "./env.server";
+import { getEmailEnvAsync } from "./env.server";
 import { isCloudflareWorkersRuntime } from "./runtime.server";
-import { SOUMISSION_RECIPIENTS } from "./soumission.constants";
+import { SOUMISSION_CC, SOUMISSION_RECIPIENT } from "./soumission.constants";
 
 export type SoumissionEmailErrorCode = "smtp_config" | "smtp_send";
 
@@ -24,6 +24,13 @@ type SoumissionEmailPayload = {
   city?: string;
   people?: string;
   notes?: string;
+};
+
+type ResendFrom = { email: string; name: string };
+
+const DEFAULT_FROM: ResendFrom = {
+  email: "conciergerie@ir-immigration.com",
+  name: "IR Conciergerie",
 };
 
 function escapeHtml(value: string): string {
@@ -64,12 +71,64 @@ function buildSoumissionEmailHtml(data: SoumissionEmailPayload): string {
   `.trim();
 }
 
-function getFromAddress(emailEnv: Record<string, string>): string {
-  return emailEnv.EMAIL_FROM ?? "IR Conciergerie <conciergerie@ir-immigration.com>";
+function parseFromAddress(emailEnv: Record<string, string>): ResendFrom {
+  const raw = emailEnv.EMAIL_FROM?.trim();
+  if (!raw) return DEFAULT_FROM;
+
+  const match = raw.match(/^(.+?)\s*<([^>]+)>$/);
+  if (match) {
+    return { name: match[1].trim(), email: match[2].trim() };
+  }
+
+  if (raw.includes("@")) {
+    return { ...DEFAULT_FROM, email: raw };
+  }
+
+  return DEFAULT_FROM;
+}
+
+function getFromAddressString(from: ResendFrom): string {
+  return `${from.name} <${from.email}>`;
 }
 
 function shouldUseResend(emailEnv: Record<string, string>): boolean {
   return isCloudflareWorkersRuntime() || Boolean(emailEnv.RESEND_API_KEY?.trim());
+}
+
+function mapResendError(status: number, details: string): SoumissionEmailError {
+  if (status === 401) {
+    return new SoumissionEmailError(
+      "smtp_config",
+      "Clé API Resend invalide. Regénérez-la sur resend.com et mettez à jour Cloudflare.",
+    );
+  }
+
+  if (status === 403) {
+    return new SoumissionEmailError(
+      "smtp_config",
+      "Domaine non autorisé sur Resend. Vérifiez ir-immigration.com dans Resend → Domains.",
+    );
+  }
+
+  if (status === 422) {
+    return new SoumissionEmailError(
+      "smtp_send",
+      `Paramètres email invalides (Resend 422). ${details.slice(0, 200)}`,
+    );
+  }
+
+  if (status === 429) {
+    return new SoumissionEmailError(
+      "smtp_send",
+      "Quota Resend dépassé. Réessayez dans quelques minutes.",
+    );
+  }
+
+  return new SoumissionEmailError(
+    "smtp_send",
+    "Envoi du courriel impossible via Resend.",
+    { cause: new Error(details) },
+  );
 }
 
 async function sendViaResend(
@@ -86,7 +145,8 @@ async function sendViaResend(
 
   const subject = `Récapitulatif soumission — ${data.firstName} ${data.lastName}`;
   const html = buildSoumissionEmailHtml(data);
-  const from = getFromAddress(emailEnv);
+  const from = parseFromAddress(emailEnv);
+  const replyTo = data.email.trim();
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -96,8 +156,9 @@ async function sendViaResend(
     },
     body: JSON.stringify({
       from,
-      to: [...SOUMISSION_RECIPIENTS],
-      reply_to: data.email,
+      to: [SOUMISSION_RECIPIENT],
+      cc: [SOUMISSION_CC],
+      reply_to: replyTo,
       subject,
       html,
     }),
@@ -106,21 +167,7 @@ async function sendViaResend(
   if (!response.ok) {
     const details = await response.text();
     console.error("Échec Resend:", response.status, details);
-
-    if (response.status === 401 || response.status === 403) {
-      throw new SoumissionEmailError(
-        "smtp_config",
-        response.status === 401
-          ? "Clé API Resend invalide. Regénérez-la sur resend.com et mettez à jour Cloudflare."
-          : "Domaine non autorisé sur Resend. Vérifiez ir-immigration.com dans Resend → Domains.",
-      );
-    }
-
-    throw new SoumissionEmailError(
-      "smtp_send",
-      "Envoi du courriel impossible via Resend.",
-      { cause: new Error(details) },
-    );
+    throw mapResendError(response.status, details);
   }
 }
 
@@ -132,7 +179,7 @@ async function sendViaSmtp(data: SoumissionEmailPayload, emailEnv: Record<string
   const pass = emailEnv.SMTP_PASS?.trim();
   const port = Number(emailEnv.SMTP_PORT ?? 465);
   const secure = emailEnv.SMTP_SECURE !== "false";
-  const from = getFromAddress(emailEnv);
+  const from = getFromAddressString(parseFromAddress(emailEnv));
 
   if (!host || !user || !pass) {
     throw new SoumissionEmailError(
@@ -172,8 +219,9 @@ async function sendViaSmtp(data: SoumissionEmailPayload, emailEnv: Record<string
   try {
     await transport.sendMail({
       from,
-      to: SOUMISSION_RECIPIENTS.join(", "),
-      replyTo: data.email,
+      to: SOUMISSION_RECIPIENT,
+      cc: SOUMISSION_CC,
+      replyTo: data.email.trim(),
       subject,
       html,
     });
@@ -188,7 +236,7 @@ async function sendViaSmtp(data: SoumissionEmailPayload, emailEnv: Record<string
 }
 
 export async function sendSoumissionEmail(data: SoumissionEmailPayload): Promise<void> {
-  const emailEnv = getEmailEnv();
+  const emailEnv = await getEmailEnvAsync();
 
   if (shouldUseResend(emailEnv)) {
     await sendViaResend(data, emailEnv);
