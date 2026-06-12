@@ -13,12 +13,19 @@ export function LanguageSwitcher({ compact = false, className = "" }: LanguageSw
   const { locale, setLocale } = useI18n();
 
   return (
-    <label className={cn("inline-flex items-center gap-1.5 shrink-0", className)}>
-      <span className="material-symbols-outlined text-[16px] text-muted hidden sm:inline">language</span>
+    <label className={cn("inline-flex items-center gap-2 shrink-0", className)}>
       <span
         className={cn(
-          "relative inline-flex items-center rounded-full border border-line/60 bg-white",
-          compact ? "h-9 min-w-[7rem] max-w-[11rem]" : "h-10 min-w-[9rem]",
+          "material-symbols-outlined text-muted hidden sm:inline",
+          compact ? "text-[18px]" : "text-[16px]",
+        )}
+      >
+        language
+      </span>
+      <span
+        className={cn(
+          "relative inline-flex items-center rounded-full border border-line/60 bg-white shadow-sm",
+          compact ? "h-11 min-w-[7.5rem] max-w-[12rem] sm:h-12" : "h-10 min-w-[9rem]",
         )}
       >
         <select
@@ -26,10 +33,10 @@ export function LanguageSwitcher({ compact = false, className = "" }: LanguageSw
           onChange={(e) => setLocale(e.target.value as Locale)}
           aria-label="Choisir la langue"
           className={cn(
-            "h-full w-full cursor-pointer appearance-none truncate rounded-full bg-transparent font-medium text-text transition focus:outline-none",
+            "h-full w-full cursor-pointer appearance-none truncate rounded-full bg-transparent text-text transition focus:outline-none",
             compact
-              ? "pl-3 pr-7 text-left text-[10px] sm:text-[11px]"
-              : "pl-3 pr-7 text-left text-[11px] sm:text-sm",
+              ? "pl-4 pr-8 text-left text-[10px] font-semibold tracking-wide sm:text-xs"
+              : "pl-3 pr-7 text-left text-[11px] font-medium sm:text-sm",
           )}
         >
           {LOCALES.map((code) => (
@@ -42,7 +49,7 @@ export function LanguageSwitcher({ compact = false, className = "" }: LanguageSw
           aria-hidden
           className={cn(
             "pointer-events-none absolute top-1/2 -translate-y-1/2 text-muted",
-            compact ? "right-2.5 h-3 w-3" : "right-3 h-3.5 w-3.5",
+            compact ? "right-3 h-3.5 w-3.5 sm:h-4 sm:w-4" : "right-3 h-3.5 w-3.5",
           )}
         />
       </span>

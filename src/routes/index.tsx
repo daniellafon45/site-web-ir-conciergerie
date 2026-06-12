@@ -105,7 +105,7 @@ function Index() {
             </nav>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0 mr-1 sm:mr-2">
-            <LanguageSwitcher compact className="[&>.material-symbols-outlined]:text-[18px]" />
+            <LanguageSwitcher compact />
             <Link to="/soumission" className="bg-brand-primary text-white rounded-full hover:bg-brand-primary/90 transition-all shrink-0 flex items-center px-4 sm:px-8 text-[10px] sm:text-xs h-11 sm:h-12 font-semibold uppercase tracking-wider shadow-md">
               <span className="sm:hidden">{t.nav.ctaShort}</span>
               <span className="hidden sm:inline">{t.nav.cta}</span>
