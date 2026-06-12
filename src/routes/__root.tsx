@@ -77,11 +77,14 @@ const HREFLANG_LINKS = [
   { hreflang: "fr", href: `${SITE_URL}/` },
   { hreflang: "en", href: `${SITE_URL}/?lang=en` },
   { hreflang: "es", href: `${SITE_URL}/?lang=es` },
+  { hreflang: "pt", href: `${SITE_URL}/?lang=pt` },
+  { hreflang: "ht", href: `${SITE_URL}/?lang=ht` },
   { hreflang: "zh-Hans", href: `${SITE_URL}/?lang=zh` },
   { hreflang: "ar", href: `${SITE_URL}/?lang=ar` },
   { hreflang: "ln", href: `${SITE_URL}/?lang=ln` },
   { hreflang: "sw", href: `${SITE_URL}/?lang=sw` },
   { hreflang: "wo", href: `${SITE_URL}/?lang=wo` },
+  { hreflang: "ff", href: `${SITE_URL}/?lang=ff` },
   { hreflang: "x-default", href: `${SITE_URL}/` },
 ] as const;
 

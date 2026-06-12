@@ -34,7 +34,7 @@ export function buildLocalBusinessJsonLd() {
       "Settlement services Canada",
     ],
     priceRange: "$$",
-    knowsLanguage: ["fr", "en", "es", "zh", "ar", "ln", "sw", "wo"],
+    knowsLanguage: ["fr", "en", "es", "pt", "ht", "zh", "ar", "ln", "sw", "wo", "ff"],
     sameAs: ORGANIZATION.sameAs,
   };
 }
@@ -48,7 +48,7 @@ export function buildWebSiteJsonLd() {
     name: ORGANIZATION.name,
     description:
       "Service de conciergerie pour votre arrivée et installation au Canada. Demandez une soumission en ligne.",
-    inLanguage: ["fr-CA", "en-CA", "es", "zh-Hans", "ar", "ln", "sw", "wo"],
+    inLanguage: ["fr-CA", "en-CA", "es", "pt", "ht", "zh-Hans", "ar", "ln", "sw", "wo", "ff"],
     publisher: { "@id": `${SITE_URL}/#organization` },
     potentialAction: {
       "@type": "SearchAction",

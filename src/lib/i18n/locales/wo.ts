@@ -16,11 +16,17 @@ export const wo: Messages = {
   hero: { title: "Defal sa ñëw ak sa installation ci Kanadaa ni expérience bu mat nañu ko." },
   trust: ["Kumpaani yu réew mi", "Expatriés", "Étudiants yu aduna bi", "Waa kër", "Professionnels"],
   premium: {
-    ...fr.premium,
     title: "Serwiis yu Premium",
     subtitle: "ci 80$ CAD + taxe rekk",
     requestQuote: "Laaj offre",
+    arrival: "Ñëw",
+    assistance: "Ndimbal",
+    supportTitle: "Ndimbal Client",
     support247: "Am na 24/7",
+    secureTransport: "Transport bu Sécurité",
+    guaranteedInspection: "Inspection garantie",
+    testimonialName: "Marie L.",
+    testimonialText: "Installation bu baax!",
   },
   manifesto:
     "Defal nu logistics sa ñëw, sa installation ak sa dem ci Kanadaa. IR Conciergerie di orchestrer lépp ci sa installation.",
@@ -42,6 +48,12 @@ export const wo: Messages = {
     title: "Excellence ngir Sa Installation",
     body: "IR Conciergerie di soppi dalal ci Kanadaa. Mission bi mooy jox ku nekk installation bu sedd, bu am sécurité ak bu gëna rafet.",
     immigration: "Danga soxla ndimbal ci immigration ? Jëndal sunu département :",
+  },
+  testimonial: {
+    quote:
+      "IR Conciergerie soppi stress bi ci sunu dem ci aduna bi ci expérience bu sedd ak bu am kool. Serwiis bu gëna rafet.",
+    name: "Jean-François M.",
+    role: "Directeur Exécutif, Dem ci Montréal",
   },
   cta: {
     title: "Pare nga ngir planifie sa ñëw ?",

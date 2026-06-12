@@ -17,11 +17,17 @@ export const ln: Messages = {
   hero: { title: "Sala koya na Canada mpe kobanda kaka expérience ya malamu mpe ya kimia." },
   trust: ["Bisnes ya mboka", "Bato ya kofanda na mboka mosusu", "Batelisi ya mokili mobimba", "Libota", "Bato ya mosala"],
   premium: {
-    ...fr.premium,
     title: "Misala ya Premium",
     subtitle: "kowuta na 80$ CAD + taxes",
     requestQuote: "Kosenga offre",
+    arrival: "Koya",
+    assistance: "Lisalisi",
+    supportTitle: "Lisungi ya ba clients",
     support247: "Ezali na 24/7",
+    secureTransport: "Transfert ya sécurité",
+    guaranteedInspection: "Inspection garanti",
+    testimonialName: "Marie L.",
+    testimonialText: "Installation ya malamu!",
   },
   manifesto:
     "Tika biso kosala makambo ya logistics ya koya, kobanda mpe kobongisa na Canada. IR Conciergerie ekamba nguya etape nyonso ya installation na yo.",
@@ -43,6 +49,12 @@ export const ln: Messages = {
     title: "Excellence mpo na installation na yo",
     body: "IR Conciergerie ezali kobongola boyei na Canada. Mission na biso: kopesa bato nyonso kobanda ya malamu, ya sécurité mpe ya niveau ya likolo.",
     immigration: "Ozali na besoin ya lisalisi na immigration ? Benga département na biso :",
+  },
+  testimonial: {
+    quote:
+      "IR Conciergerie ebongoli stress ya kobongisa na biso na mokili mobimba na expérience ya malamu mpe ya kimia. Service ya solo mpenza.",
+    name: "Jean-François M.",
+    role: "Directeur Exécutif, Abongisami na Montréal",
   },
   cta: {
     title: "Ozali prêt kolanda koya na yo ?",

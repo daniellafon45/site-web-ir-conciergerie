@@ -1,26 +1,32 @@
-export const LOCALES = ["fr", "en", "es", "zh", "ar", "ln", "sw", "wo"] as const;
+export const LOCALES = ["fr", "en", "es", "pt", "ht", "zh", "ar", "ln", "sw", "wo", "ff"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export const LOCALE_LABELS: Record<Locale, string> = {
   fr: "Français",
   en: "English",
   es: "Español",
+  pt: "Português",
+  ht: "Kreyòl",
   zh: "中文 (Mandarin)",
   ar: "العربية",
   ln: "Lingala",
   sw: "Kiswahili",
   wo: "Wolof",
+  ff: "Pular / Peulh",
 };
 
 export const LOCALE_HTML_LANG: Record<Locale, string> = {
   fr: "fr",
   en: "en",
   es: "es",
+  pt: "pt",
+  ht: "ht",
   zh: "zh-Hans",
   ar: "ar",
   ln: "ln",
   sw: "sw",
   wo: "wo",
+  ff: "ff",
 };
 
 export type PillarItem = {

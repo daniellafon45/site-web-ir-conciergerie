@@ -16,11 +16,17 @@ export const sw: Messages = {
   hero: { title: "Fanya kuwasili na kuishi Canada kuwe uzoefu ulio na mpangilio na utulivu." },
   trust: ["Biashara za Ndani", "Wahamiaji", "Wanafunzi wa Kimataifa", "Familia", "Wataalamu"],
   premium: {
-    ...fr.premium,
     title: "Huduma za Premium",
     subtitle: "kuanzia $80 CAD + kodi tu",
     requestQuote: "Omba bei",
+    arrival: "Kuwasili",
+    assistance: "Msaada",
+    supportTitle: "Msaada kwa Wateja",
     support247: "Inapatikana 24/7",
+    secureTransport: "Usafiri Salama",
+    guaranteedInspection: "Ukaguzi wa Uhakika",
+    testimonialName: "Marie L.",
+    testimonialText: "Usanidi kamili!",
   },
   manifesto:
     "Acha changamoto za kuwasili, kujumuishwa na kuhamia Canada kwetu. IR Conciergerie inaratibu kila hatua ya uhamishaji wako.",
@@ -42,6 +48,12 @@ export const sw: Messages = {
     title: "Ubora katika Huduma ya Uhamishaji Wako",
     body: "IR Conciergerie inabadilisha ukarimu nchini Canada. Tunatoa uhamishaji laini, salama na wa kiwango cha juu.",
     immigration: "Unahitaji msaada wa uhamiaji? Wasiliana na idara yetu:",
+  },
+  testimonial: {
+    quote:
+      "IR Conciergerie ilibadilisha msongo wa kuhamia kwetu kimataifa kuwa uzoefu laini na wa kutuliza. Huduma ya kweli bora.",
+    name: "Jean-François M.",
+    role: "Mkurugenzi Mtendaji, Alihamia Montreal",
   },
   cta: {
     title: "Uko tayari kupanga kuwasili kwako?",

@@ -25,7 +25,7 @@ export function LanguageSwitcher({ compact = false, className = "" }: LanguageSw
       <span
         className={cn(
           "relative inline-flex items-center rounded-full border border-line/60 bg-white shadow-sm",
-          compact ? "h-11 min-w-[7.5rem] max-w-[12rem] sm:h-12" : "h-10 min-w-[9rem]",
+          compact ? "h-11 min-w-[7.5rem] max-w-[13rem] sm:h-12" : "h-10 min-w-[9rem]",
         )}
       >
         <select
