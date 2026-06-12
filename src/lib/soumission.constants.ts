@@ -7,6 +7,17 @@ export const SOUMISSION_CC = "direction@ir-immigration.com";
 /** @deprecated Utiliser SOUMISSION_RECIPIENT et SOUMISSION_CC. */
 export const SOUMISSION_RECIPIENTS = [SOUMISSION_RECIPIENT, SOUMISSION_CC] as const;
 
+export const SERVICE_ICONS = {
+  transfert: "flight_land",
+  inspection: "fact_check",
+  recherche: "home_work",
+  courses: "shopping_basket",
+  accompagnement: "directions_car",
+  cles: "key",
+  mandat: "luggage",
+  logistique: "support_agent",
+} as const;
+
 export const SERVICES = [
   { id: "transfert", title: "Transfert aéroport", desc: "Accueil et transfert privé dès votre atterrissage.", icon: "flight_land" },
   { id: "inspection", title: "Inspection de logement", desc: "Visite et rapport détaillé avant signature ou aménagement.", icon: "fact_check" },

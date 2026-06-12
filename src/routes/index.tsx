@@ -1,6 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { HeroCrossfadeVideos } from "@/components/HeroCrossfadeVideos";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { SeoHead } from "@/components/SeoHead";
+import { useI18n } from "@/lib/i18n/I18nProvider";
+import { SITE_URL } from "@/lib/seo";
 import aboutIrConciergerie from "@/assets/about-ir-conciergerie.png";
 import arriveeAirport from "@/assets/arrivee-airport.png";
 import contactDeal from "@/assets/contact-deal.png";
@@ -20,10 +24,15 @@ import transportEscalade from "@/assets/transport-escalade.png";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "IR Conciergerie — Votre arrivée au Canada, maîtrisée." },
-      { name: "description", content: "Service de conciergerie premium pour votre relocalisation au Canada. Accueil VIP, recherche de logement, inspection et démarches administratives." },
-      { property: "og:title", content: "IR Conciergerie — Votre arrivée au Canada, maîtrisée." },
-      { property: "og:description", content: "Service de conciergerie premium pour votre relocalisation au Canada." },
+      {
+        title: "IR Conciergerie — Conciergerie relocalisation Canada | Montréal, Toronto, Vancouver",
+      },
+      {
+        name: "description",
+        content:
+          "Conciergerie premium pour votre arrivée au Canada : transfert aéroport, recherche de logement, inspection, installation. Montréal, Toronto, Vancouver.",
+      },
+      { property: "og:url", content: SITE_URL },
     ],
   }),
   component: Index,
@@ -43,8 +52,6 @@ const IMG = {
   s4: serviceInstallationComplete,
 };
 
-const trustItems = ["Entreprises Locales", "Expatriés", "Étudiants Internationaux", "Familles", "Professionnels"];
-
 function CollageSoumissionButton({
   alwaysVisible = false,
   showOnMobile = false,
@@ -54,6 +61,7 @@ function CollageSoumissionButton({
   showOnMobile?: boolean;
   className?: string;
 }) {
+  const { t } = useI18n();
   const visibilityClass = alwaysVisible
     ? "opacity-100 scale-100"
     : showOnMobile
@@ -65,81 +73,52 @@ function CollageSoumissionButton({
       to="/soumission"
       className={`absolute left-1/2 z-20 inline-flex items-center justify-center gap-1 bg-brand-primary text-white rounded-full font-semibold uppercase tracking-wider hover:bg-brand-primary/90 shadow-lg transition-all duration-300 max-w-[calc(100%-1.5rem)] text-[9px] leading-tight px-3 py-2 sm:text-[10px] sm:px-4 sm:py-2 sm:gap-1.5 sm:leading-normal sm:max-w-none whitespace-normal text-center sm:whitespace-nowrap -translate-x-1/2 max-lg:bottom-4 max-lg:top-auto max-lg:translate-y-0 lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto ${visibilityClass} ${className}`}
     >
-      Demander une soumission
+      {t.premium.requestQuote}
       <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
     </Link>
   );
 }
 
+const PILLAR_BACKGROUNDS = [pillarAccueilVip, pillarLogement, pillarTranquillite];
+
 function Index() {
+  const { t } = useI18n();
   const [activePillar, setActivePillar] = useState(0);
-  const pillars = [
-    {
-      title: "Accueil VIP",
-      desc: "Un chauffeur privé vous attend à l'aéroport pour un transfert confortable vers votre nouvelle résidence ou hébergement temporaire.",
-      cardTitle: "Itinéraire d'Arrivée",
-      bg: pillarAccueilVip,
-      items: [
-        ["flight_land", "Accueil_Aéroport", "Un agent dédié vous accueille dès la sortie de l'avion."],
-        ["directions_car", "Transfert_Privé", "Berline haut de gamme et chauffeur professionnel à votre disposition."],
-        ["luggage", "Gestion_Bagages", "Vos bagages pris en charge, transportés et livrés sans effort."],
-        ["key", "Remise_des_Clés", "Accès à votre logement organisé, prêt à l'arrivée."],
-      ] as [string, string, string][],
-    },
-    {
-      title: "Logement Clé en Main",
-      desc: "Nous trouvons la propriété idéale selon vos critères et gérons les inspections minutieuses avant votre aménagement.",
-      cardTitle: "Dossier Logement",
-      bg: pillarLogement,
-      items: [
-        ["home_work", "Recherche_Logement", "Sélection de propriétés sur mesure selon vos critères."],
-        ["fact_check", "Rapport_Inspection", "Inspection détaillée et rapport complet avant signature."],
-        ["description", "Signature_Bail", "Négociation et signature du bail gérées pour vous."],
-        ["chair", "Ameublement", "Logement meublé et équipé, prêt à vivre dès votre arrivée."],
-      ] as [string, string, string][],
-    },
-    {
-      title: "Tranquillité d'Esprit",
-      desc: "De l'ouverture des comptes bancaires aux abonnements de services publics, nous facilitons toutes vos démarches locales.",
-      cardTitle: "Démarches Administratives",
-      bg: pillarTranquillite,
-      items: [
-        ["account_balance", "Compte_Bancaire", "Ouverture de compte facilitée auprès de nos partenaires bancaires."],
-        ["bolt", "Services_Publics", "Électricité, gaz et eau activés avant votre emménagement."],
-        ["wifi", "Internet_Téléphonie", "Forfaits Internet et mobile souscrits et installés."],
-        ["health_and_safety", "Assurance_Santé", "Couverture santé adaptée, mise en place rapidement."],
-      ] as [string, string, string][],
-    },
-  ];
+  const pillars = t.pillars.pillars.map((p, i) => ({ ...p, bg: PILLAR_BACKGROUNDS[i] }));
   const current = pillars[activePillar];
+  const trustItems = t.trust;
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-page-bg text-text">
+    <div className="min-h-screen overflow-x-hidden bg-white text-text">
+      <SeoHead page="home" />
       {/* Floating Nav */}
-      <header className="fixed top-3 sm:top-6 left-0 right-0 z-50 flex items-center justify-center px-3 sm:px-4 pointer-events-none">
-        <div className="pointer-events-auto w-full max-w-[800px] flex items-center justify-between gap-2 bg-white/90 backdrop-blur-xl rounded-full px-1.5 sm:px-2 py-1.5 sm:py-2 shadow-lg border border-line/20 min-h-14 sm:h-16">
-          <div className="flex items-center gap-3 sm:gap-8 pl-1 sm:pl-2 min-w-0">
+      <header className="fixed top-4 sm:top-6 left-0 right-0 z-50 flex items-center justify-center px-4 sm:px-6 pointer-events-none">
+        <div className="pointer-events-auto w-full max-w-[1280px] flex items-center justify-between gap-3 sm:gap-4 bg-white/95 backdrop-blur-xl rounded-full px-3 sm:px-8 py-2.5 sm:py-3 shadow-lg border border-line/20 min-h-[4.5rem] sm:min-h-20 sm:h-20">
+          <div className="flex items-center gap-4 sm:gap-10 pl-2 sm:pl-3 min-w-0">
             <Link to="/" className="shrink-0">
-              <img alt="IR Conciergerie" className="h-8 sm:h-10 w-auto object-contain" src={IMG.logo} />
+              <img alt="IR Conciergerie" className="h-10 sm:h-12 w-auto object-contain" src={IMG.logo} />
             </Link>
-            <nav className="hidden md:flex items-center gap-6">
-              <a className="text-[12px] font-semibold tracking-[0.05em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#services">Services</a>
-              <a className="text-[12px] font-semibold tracking-[0.05em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#about">À Propos</a>
-              <a className="text-[12px] font-semibold tracking-[0.05em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#contact">Contact</a>
+            <nav className="hidden md:flex items-center gap-8 lg:gap-10">
+              <a className="text-[13px] lg:text-sm font-semibold tracking-[0.06em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#services">{t.nav.services}</a>
+              <a className="text-[13px] lg:text-sm font-semibold tracking-[0.06em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#about">{t.nav.about}</a>
+              <a className="text-[13px] lg:text-sm font-semibold tracking-[0.06em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#contact">{t.nav.contact}</a>
             </nav>
           </div>
-          <Link to="/soumission" className="bg-brand-primary text-white rounded-full hover:bg-brand-primary/90 transition-all shrink-0 flex items-center px-3 sm:px-6 text-[9px] sm:text-[11px] h-9 sm:h-10 font-semibold uppercase tracking-wider mr-0.5 sm:mr-1 shadow-md">
-            <span className="sm:hidden">Soumission</span>
-            <span className="hidden sm:inline">Demander une soumission</span>
-          </Link>
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0 mr-1 sm:mr-2">
+            <LanguageSwitcher compact className="[&_select]:text-[11px] [&_select]:sm:text-xs [&_select]:px-2.5 [&_select]:sm:px-3 [&_select]:py-2 [&_select]:max-w-[6rem] [&_span]:text-[18px]" />
+            <Link to="/soumission" className="bg-brand-primary text-white rounded-full hover:bg-brand-primary/90 transition-all shrink-0 flex items-center px-4 sm:px-8 text-[10px] sm:text-xs h-11 sm:h-12 font-semibold uppercase tracking-wider shadow-md">
+              <span className="sm:hidden">{t.nav.ctaShort}</span>
+              <span className="hidden sm:inline">{t.nav.cta}</span>
+            </Link>
+          </div>
         </div>
       </header>
 
       <main>
         {/* Hero */}
-        <section className="pt-28 sm:pt-36 md:pt-[240px] px-4 sm:px-6 md:px-10 max-w-[1728px] mx-auto flex flex-col items-center text-center pb-16 sm:pb-24 md:pb-[200px]">
+        <section className="pt-32 sm:pt-40 md:pt-[248px] px-4 sm:px-6 md:px-10 max-w-[1728px] mx-auto flex flex-col items-center text-center pb-16 sm:pb-24 md:pb-[200px]">
           <h1 className="text-balance max-w-5xl mb-8 sm:mb-12 md:mb-16 tracking-tighter text-[1.75rem] leading-[1.08] sm:text-4xl md:text-[64px] lg:text-[82px] md:leading-[1.05] font-bold px-1">
-            Transformez votre arrivée et intégration au Canada en une expérience maîtrisée.
+            {t.hero.title}
           </h1>
           <div className="w-full max-w-[1492px] overflow-hidden shadow-2xl relative rounded-2xl sm:rounded-[32px] md:rounded-[40px] h-[220px] sm:h-[360px] md:h-[600px] lg:h-[800px]">
             <HeroCrossfadeVideos />
@@ -164,10 +143,10 @@ function Index() {
         <section className="w-full max-w-[1728px] mx-auto px-6 lg:px-10 pt-20 pb-8 lg:pt-32 lg:pb-12">
           <div className="text-center mb-12 lg:mb-20 relative z-30 max-w-4xl mx-auto">
             <h2 className="font-bold tracking-tighter leading-[0.95] text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[80px]">
-              Services Premium
+              {t.premium.title}
             </h2>
             <p className="text-lg lg:text-2xl xl:text-[32px] font-medium text-muted mt-3 lg:mt-4">
-              à partir de 80$ CAD + taxes seulement
+              {t.premium.subtitle}
             </p>
           </div>
 
@@ -179,7 +158,7 @@ function Index() {
               <CollageSoumissionButton />
               <div className="absolute bottom-4 left-4 right-4 bg-white/80 backdrop-blur-xl border border-white rounded-2xl p-4 shadow-lg">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-[10px] text-brand-primary font-bold uppercase tracking-wider">Arrivée</span>
+                  <span className="text-[10px] text-brand-primary font-bold uppercase tracking-wider">{t.premium.arrival}</span>
                   <span className="text-[10px] text-text font-bold">100%</span>
                 </div>
                 <div className="w-full bg-line/30 rounded-full h-1.5"><div className="bg-brand-primary w-full h-1.5 rounded-full" /></div>
@@ -197,7 +176,7 @@ function Index() {
 
             <div className="absolute left-[8%] xl:left-[10%] top-[32%] w-[260px] xl:w-[300px] z-[15] rounded-[28px] bg-white/80 backdrop-blur-3xl border border-white shadow-[0_12px_40px_rgba(0,0,0,0.08)] flex flex-col p-5">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-semibold">Assistance</span>
+                <span className="text-xs font-semibold">{t.premium.assistance}</span>
                 <div className="w-10 h-6 bg-brand-primary rounded-full relative shadow-inner">
                   <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm" />
                 </div>
@@ -207,8 +186,8 @@ function Index() {
                   <span className="material-symbols-outlined text-brand-primary text-sm">support_agent</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[11px] font-bold">Support Client</span>
-                  <span className="text-[12px] text-muted leading-tight">24/7 Disponible</span>
+                  <span className="text-[11px] font-bold">{t.premium.supportTitle}</span>
+                  <span className="text-[12px] text-muted leading-tight">{t.premium.support247}</span>
                 </div>
               </div>
             </div>
@@ -219,7 +198,7 @@ function Index() {
               <CollageSoumissionButton />
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-xl px-4 py-2 rounded-full border border-white shadow-sm flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
-                <span className="text-[10px] font-bold uppercase tracking-wider">Transport Sécurisé</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider">{t.premium.secureTransport}</span>
               </div>
             </div>
 
@@ -229,7 +208,7 @@ function Index() {
               <CollageSoumissionButton />
               <div className="absolute bottom-5 left-5 bg-white/90 backdrop-blur-xl px-4 py-2 rounded-full border border-white shadow-sm flex items-center gap-2">
                 <span className="material-symbols-outlined text-brand-primary text-sm">verified</span>
-                <span className="text-[10px] font-bold uppercase tracking-wider">Inspection Garantie</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider">{t.premium.guaranteedInspection}</span>
               </div>
             </div>
 
@@ -248,8 +227,8 @@ function Index() {
                 <img className="w-full h-full object-cover" src={IMG.avatar} alt="" />
               </div>
               <div className="flex flex-col pr-4">
-                <span className="text-[11px] font-bold">Marie L.</span>
-                <span className="text-[13px] text-muted leading-tight">Une installation parfaite !</span>
+                <span className="text-[11px] font-bold">{t.premium.testimonialName}</span>
+                <span className="text-[13px] text-muted leading-tight">{t.premium.testimonialText}</span>
               </div>
             </div>
           </div>
@@ -262,7 +241,7 @@ function Index() {
               <CollageSoumissionButton alwaysVisible className="max-lg:bottom-[5.5rem]" />
               <div className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-xl border border-white rounded-xl p-3 shadow-sm">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-[10px] text-brand-primary font-bold uppercase tracking-wider">Arrivée</span>
+                  <span className="text-[10px] text-brand-primary font-bold uppercase tracking-wider">{t.premium.arrival}</span>
                   <span className="text-[10px] text-text font-bold">100%</span>
                 </div>
                 <div className="w-full bg-line/30 rounded-full h-1.5"><div className="bg-brand-primary w-full h-1.5 rounded-full" /></div>
@@ -280,7 +259,7 @@ function Index() {
 
             <div className="rounded-[24px] bg-white border border-line/20 shadow-lg p-5 flex flex-col justify-center h-48">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-semibold">Assistance</span>
+                <span className="text-xs font-semibold">{t.premium.assistance}</span>
                 <div className="w-10 h-6 bg-brand-primary rounded-full relative shadow-inner">
                   <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm" />
                 </div>
@@ -290,8 +269,8 @@ function Index() {
                   <span className="material-symbols-outlined text-brand-primary text-sm">support_agent</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[11px] font-bold">Support Client</span>
-                  <span className="text-[12px] text-muted leading-tight">24/7 Disponible</span>
+                  <span className="text-[11px] font-bold">{t.premium.supportTitle}</span>
+                  <span className="text-[12px] text-muted leading-tight">{t.premium.support247}</span>
                 </div>
               </div>
             </div>
@@ -302,7 +281,7 @@ function Index() {
               <CollageSoumissionButton alwaysVisible />
               <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-xl px-3 py-1.5 rounded-full border border-white shadow-sm flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500" />
-                <span className="text-[10px] font-bold uppercase tracking-wider">Transport Sécurisé</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider">{t.premium.secureTransport}</span>
               </div>
             </div>
 
@@ -312,7 +291,7 @@ function Index() {
               <CollageSoumissionButton alwaysVisible className="max-lg:bottom-14" />
               <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-xl px-3 py-1.5 rounded-full border border-white shadow-sm flex items-center gap-2">
                 <span className="material-symbols-outlined text-brand-primary text-sm">verified</span>
-                <span className="text-[10px] font-bold uppercase tracking-wider">Inspection Garantie</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider">{t.premium.guaranteedInspection}</span>
               </div>
             </div>
 
@@ -327,8 +306,8 @@ function Index() {
                 <img className="w-full h-full object-cover" src={IMG.avatar} alt="" />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-bold">Marie L.</span>
-                <span className="text-sm text-muted leading-tight">Une installation parfaite !</span>
+                <span className="text-sm font-bold">{t.premium.testimonialName}</span>
+                <span className="text-sm text-muted leading-tight">{t.premium.testimonialText}</span>
               </div>
             </div>
           </div>
@@ -337,7 +316,7 @@ function Index() {
         {/* Manifesto */}
         <section className="pt-8 pb-20 md:pt-12 md:pb-28 lg:pt-16 lg:pb-32 px-4 sm:px-6 md:px-10 max-w-[1728px] mx-auto flex flex-col items-center text-center">
           <h2 className="text-2xl sm:text-3xl md:text-[36px] lg:text-[49px] leading-[1.15] sm:leading-[1.1] text-balance tracking-tight max-w-[1000px] font-medium">
-            Déléguez les complexités logistiques de votre arrivée, intégration et déménagement à travers le Canada. IR Conciergerie orchestre chaque étape de votre installation avec précision et élégance.
+            {t.manifesto}
           </h2>
         </section>
 
@@ -358,24 +337,24 @@ function Index() {
                   <span className="material-symbols-outlined text-muted">more_horiz</span>
                 </div>
                 <div key={activePillar} className="space-y-2 animate-in fade-in duration-300">
-                  {current.items.map(([icon, label, pitch]) => (
+                  {current.items.map((item) => (
                     <div
-                      key={label}
+                      key={item.label}
                       className="group/item relative p-3 rounded-xl hover:bg-soft-card max-lg:bg-soft-card/50 transition-colors"
                     >
                       <div className="flex items-center gap-4">
-                        <span className="material-symbols-outlined text-brand-primary shrink-0">{icon}</span>
-                        <span className="font-medium text-sm sm:text-base">{label}</span>
+                        <span className="material-symbols-outlined text-brand-primary shrink-0">{item.icon}</span>
+                        <span className="font-medium text-sm sm:text-base">{item.label}</span>
                       </div>
                       <div className="grid grid-rows-[0fr] group-hover/item:grid-rows-[1fr] max-lg:grid-rows-[1fr] transition-all duration-300 ease-out">
                         <div className="overflow-hidden">
-                          <p className="text-[13px] text-muted leading-relaxed pt-3 pl-0 sm:pl-10 pr-1">{pitch}</p>
+                          <p className="text-[13px] text-muted leading-relaxed pt-3 pl-0 sm:pl-10 pr-1">{item.pitch}</p>
                           <div className="pl-0 sm:pl-10 pt-3 pb-1">
                             <Link
                               to="/soumission"
                               className="inline-flex items-center gap-1.5 bg-brand-primary text-white rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-wider hover:bg-brand-primary/90 transition-colors shadow-sm"
                             >
-                              Demander une soumission
+                              {t.premium.requestQuote}
                               <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                             </Link>
                           </div>
@@ -389,7 +368,7 @@ function Index() {
 
             <div className="flex flex-col justify-center max-w-lg w-full">
 
-              <h3 className="text-3xl sm:text-[40px] md:text-[48px] leading-[1.2] mb-8 sm:mb-12 font-bold tracking-tight">L'excellence au service<br />de votre installation.</h3>
+              <h3 className="text-3xl sm:text-[40px] md:text-[48px] leading-[1.2] mb-8 sm:mb-12 font-bold tracking-tight whitespace-pre-line">{t.pillars.sectionTitle}</h3>
               <div className="relative pl-6 sm:pl-8 border-l-[3px] border-line space-y-8 sm:space-y-12">
                 <div
                   className="absolute left-[-3px] w-[3px] bg-brand-primary transition-all duration-500"
@@ -418,25 +397,25 @@ function Index() {
 
         {/* Services */}
         <section id="services" className="py-20 sm:py-32 lg:py-[160px] px-4 sm:px-6 md:px-10 max-w-[1728px] mx-auto scroll-mt-28">
-          <h2 className="text-3xl sm:text-[40px] md:text-[48px] mb-10 sm:mb-16 font-bold tracking-tight text-center">Nos Services Premium.</h2>
+          <h2 className="text-3xl sm:text-[40px] md:text-[48px] mb-10 sm:mb-16 font-bold tracking-tight text-center">{t.services.sectionTitle}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {[
-              ["service-transfert-aeroport", IMG.s1, "Transfert Aéroport", "Accueil personnalisé et transport privé dès votre arrivée."],
-              ["service-recherche-logement", IMG.s2, "Recherche de Logement", "Sélection de propriétés adaptées à votre style de vie et budget."],
-              ["service-inspection", IMG.s3, "Inspection détaillée de votre logement", "Vérification rigoureuse de l'état des lieux pour votre sécurité, avant votre arrivée."],
-              ["service-installation", IMG.s4, "Installation Complète", "Gestion des abonnements et ameublement avant votre arrivée."],
-            ].map(([id, src, title, desc]) => (
-              <div key={title} id={id} className="relative min-h-[320px] h-auto sm:h-[360px] lg:h-[400px] rounded-2xl sm:rounded-[32px] p-6 sm:p-8 flex flex-col justify-end group overflow-hidden border border-line/20 scroll-mt-28">
-                <img alt={title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src={src} />
+              [IMG.s1, t.services.cards[0]],
+              [IMG.s2, t.services.cards[1]],
+              [IMG.s3, t.services.cards[2]],
+              [IMG.s4, t.services.cards[3]],
+            ].map(([src, card]) => (
+              <div key={card.id} id={card.id} className="relative min-h-[320px] h-auto sm:h-[360px] lg:h-[400px] rounded-2xl sm:rounded-[32px] p-6 sm:p-8 flex flex-col justify-end group overflow-hidden border border-line/20 scroll-mt-28">
+                <img alt={card.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src={src as string} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                 <div className="relative z-10">
-                  <h4 className="text-xl sm:text-2xl font-bold mb-2 text-white">{title}</h4>
-                  <p className="text-sm sm:text-base text-white/90">{desc}</p>
+                  <h4 className="text-xl sm:text-2xl font-bold mb-2 text-white">{card.title}</h4>
+                  <p className="text-sm sm:text-base text-white/90">{card.desc}</p>
                   <Link
                     to="/soumission"
                     className="inline-flex items-center gap-1.5 mt-5 bg-brand-primary text-white rounded-full px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wider hover:bg-brand-primary/90 shadow-md opacity-100 translate-y-0 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300"
                   >
-                    Demander une soumission
+                    {t.premium.requestQuote}
                     <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                   </Link>
                 </div>
@@ -449,13 +428,13 @@ function Index() {
         <section id="about" className="py-20 sm:py-32 lg:py-40 px-4 sm:px-6 md:px-10 max-w-[1728px] mx-auto scroll-mt-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-32 items-center">
             <div className="flex flex-col gap-4 sm:gap-6">
-              <span className="text-brand-primary text-xs font-bold uppercase tracking-widest">Notre Histoire</span>
-              <h2 className="text-3xl sm:text-[40px] md:text-[48px] tracking-tight font-bold leading-[1.1]">L'Excellence au Service de votre Installation</h2>
+              <span className="text-brand-primary text-xs font-bold uppercase tracking-widest">{t.about.label}</span>
+              <h2 className="text-3xl sm:text-[40px] md:text-[48px] tracking-tight font-bold leading-[1.1]">{t.about.title}</h2>
               <p className="text-base sm:text-lg text-muted leading-relaxed">
-                IR Conciergerie redéfinit l'accueil au Canada. Notre mission est d'offrir à chaque arrivant une transition fluide, sécurisée et d'un standing inégalé. Nous combinons expertise logistique et attention personnalisée pour faire de votre installation une réussite totale.
+                {t.about.body}
               </p>
               <p className="text-xl sm:text-2xl md:text-[32px] lg:text-[40px] tracking-tight font-bold leading-[1.2] break-words">
-                Besoin d'assistance pour vos procédures d'immigration ? Contactez notre département d'immigration :{" "}
+                {t.about.immigration}{" "}
                 <a
                   href="mailto:direction@ir-immigration.com"
                   className="text-brand-primary hover:text-brand-primary/80 transition-colors"
@@ -476,15 +455,15 @@ function Index() {
         {/* Testimonial */}
         <section className="py-20 sm:py-32 lg:py-40 px-4 sm:px-6 md:px-10 max-w-[1200px] mx-auto flex flex-col items-center text-center">
           <h2 className="text-2xl sm:text-[32px] md:text-[56px] leading-[1.15] sm:leading-[1.1] tracking-tight mb-10 sm:mb-16 text-balance font-normal italic px-2">
-            "IR Conciergerie a transformé le stress de notre déménagement international en une expérience fluide et rassurante. Un service véritablement exceptionnel."
+            &ldquo;{t.testimonial.quote}&rdquo;
           </h2>
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full overflow-hidden shadow-md">
               <img className="w-full h-full object-cover" src={IMG.testimonial} alt="" />
             </div>
             <div className="text-left">
-              <p className="text-base font-bold">Jean-François M.</p>
-              <p className="text-sm text-muted">Directeur Exécutif, Relocalisé à Montréal</p>
+              <p className="text-base font-bold">{t.testimonial.name}</p>
+              <p className="text-sm text-muted">{t.testimonial.role}</p>
             </div>
           </div>
         </section>
@@ -503,13 +482,13 @@ function Index() {
               <img alt="IR Conciergerie" className="h-10 w-auto object-contain" src={IMG.logo} />
             </div>
             <h2 className="text-3xl sm:text-[40px] md:text-[64px] font-bold tracking-tighter leading-[1.1] mb-6 sm:mb-8 max-w-3xl text-balance text-white px-2">
-              Prêt à planifier votre arrivée ?
+              {t.cta.title}
             </h2>
             <p className="text-white/85 mb-12 max-w-xl text-lg">
-              Contactez-nous pour une évaluation personnalisée de vos besoins en relocalisation.
+              {t.cta.body}
             </p>
             <Link to="/soumission" className="bg-brand-primary text-white rounded-full hover:bg-brand-primary/90 transition-all flex items-center px-8 py-4 text-[13px] font-bold uppercase tracking-wider shadow-lg">
-              Demander une soumission
+              {t.cta.button}
             </Link>
           </div>
         </section>
@@ -520,31 +499,31 @@ function Index() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
             <div className="flex flex-col items-start text-left gap-6">
               <img alt="IR Conciergerie" className="h-12 w-auto object-contain object-left" src={IMG.logo} />
-              <p className="text-white/60 text-sm leading-relaxed max-w-xs">Votre partenaire de confiance pour une relocalisation sereine au Canada.</p>
+              <p className="text-white/60 text-sm leading-relaxed max-w-xs">{t.footer.tagline}</p>
             </div>
             <div>
-              <h5 className="text-xs uppercase tracking-widest font-bold mb-4 text-white/40">Services</h5>
+              <h5 className="text-xs uppercase tracking-widest font-bold mb-4 text-white/40">{t.footer.services}</h5>
               <ul className="space-y-3 text-white/80">
-                <li><a href="#service-transfert-aeroport" className="hover:text-white transition-colors">Transfert Aéroport</a></li>
-                <li><a href="#service-recherche-logement" className="hover:text-white transition-colors">Recherche Logement</a></li>
-                <li><a href="#service-inspection" className="hover:text-white transition-colors">Inspection</a></li>
-                <li><a href="#demarches" className="hover:text-white transition-colors">Démarches</a></li>
+                <li><a href="#service-transfert-aeroport" className="hover:text-white transition-colors">{t.footer.links.airport}</a></li>
+                <li><a href="#service-recherche-logement" className="hover:text-white transition-colors">{t.footer.links.housing}</a></li>
+                <li><a href="#service-inspection" className="hover:text-white transition-colors">{t.footer.links.inspection}</a></li>
+                <li><a href="#demarches" className="hover:text-white transition-colors">{t.footer.links.admin}</a></li>
               </ul>
             </div>
             <div>
-              <h5 className="text-xs uppercase tracking-widest font-bold mb-4 text-white/40">Entreprise</h5>
+              <h5 className="text-xs uppercase tracking-widest font-bold mb-4 text-white/40">{t.footer.company}</h5>
               <ul className="space-y-3 text-white/80">
-                <li><a href="#about" className="hover:text-white transition-colors">À Propos</a></li>
-                <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
+                <li><a href="#about" className="hover:text-white transition-colors">{t.footer.links.about}</a></li>
+                <li><a href="#contact" className="hover:text-white transition-colors">{t.footer.links.contact}</a></li>
               </ul>
             </div>
             <div>
-              <h5 className="text-xs uppercase tracking-widest font-bold mb-4 text-white/40">Contact</h5>
+              <h5 className="text-xs uppercase tracking-widest font-bold mb-4 text-white/40">{t.footer.contact}</h5>
               <ul className="space-y-3 text-white/80">
                 <li>Montréal, QC</li>
                 <li>
                   <span className="block text-[10px] uppercase tracking-wider font-bold text-white/40 mb-1">
-                    IR Conciergerie
+                    {t.footer.irConciergerie}
                   </span>
                   <a href="mailto:conciergerie@ir-immigration.com" className="hover:text-white transition-colors break-all">
                     conciergerie@ir-immigration.com
@@ -552,7 +531,7 @@ function Index() {
                 </li>
                 <li>
                   <span className="block text-[10px] uppercase tracking-wider font-bold text-white/40 mb-1">
-                    IR Immigration
+                    {t.footer.irImmigration}
                   </span>
                   <a href="mailto:direction@ir-immigration.com" className="hover:text-white transition-colors break-all">
                     direction@ir-immigration.com
@@ -560,7 +539,7 @@ function Index() {
                 </li>
                 <li>
                   <span className="block text-[10px] uppercase tracking-wider font-bold text-white/40 mb-1">
-                    IR Recrutement
+                    {t.footer.irRecruitment}
                   </span>
                   <a href="mailto:recrutement@industriellerh.com" className="hover:text-white transition-colors break-all">
                     recrutement@industriellerh.com
@@ -570,8 +549,8 @@ function Index() {
             </div>
           </div>
           <div className="border-t border-white/10 pt-8 text-sm text-white/40 flex justify-between flex-wrap gap-4">
-            <span>© 2026 IR Conciergerie. Tous droits réservés.</span>
-            <span>Montréal — Toronto — Vancouver</span>
+            <span>{t.footer.rights}</span>
+            <span>{t.footer.cities}</span>
           </div>
         </div>
       </footer>

@@ -1,11 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { PhoneCountrySelect } from "@/components/PhoneCountrySelect";
+import { SeoHead } from "@/components/SeoHead";
 import { submitSoumission, type SoumissionResult } from "@/lib/api/soumission.functions";
 import type { SoumissionEmailErrorCode } from "@/lib/email.server";
 import { getDialCodeByCountryId } from "@/lib/dial-codes";
-import { SERVICES } from "@/lib/soumission.constants";
+import { useI18n } from "@/lib/i18n/I18nProvider";
+import { SERVICE_ICONS } from "@/lib/soumission.constants";
 import logoIrConciergerie from "@/assets/logo-ir-conciergerie.png";
 
 export const Route = createFileRoute("/soumission")({
@@ -18,45 +21,28 @@ export const Route = createFileRoute("/soumission")({
   component: SoumissionPage,
 });
 
-const STEPS = ["Vos services", "Vos informations", "Détails du projet"];
-
-function getSubmitErrorMessage(code: SoumissionEmailErrorCode | "validation"): string {
-  if (code === "validation") {
-    return "Vérifiez vos informations (courriel, téléphone, services) et réessayez.";
-  }
-
-  if (code === "smtp_config") {
-    return import.meta.env.DEV
-      ? "Configuration email incomplète — renseignez SMTP_PASS ou RESEND_API_KEY dans .env puis redémarrez le serveur."
-      : "Impossible d'envoyer votre demande pour le moment. Veuillez nous contacter directement à conciergerie@ir-immigration.com.";
-  }
-
-  if (code === "smtp_send" && import.meta.env.DEV) {
-    return "Échec de connexion email (identifiants Hostinger ou Resend). Vérifiez la configuration.";
-  }
-
-  return "Impossible d'envoyer votre demande pour le moment. Veuillez réessayer ou nous contacter directement.";
-}
-
-function getClientSubmitErrorMessage(error: unknown): string {
-  const message = error instanceof Error ? error.message : String(error);
-
-  if (/invalid email|Invalid email|validation.*email/i.test(message)) {
-    return "Vérifiez votre adresse courriel et réessayez.";
-  }
-
-  if (/fetch|network|failed to fetch|NetworkError|ECONNREFUSED/i.test(message)) {
-    return "Connexion interrompue. Vérifiez votre réseau et réessayez.";
-  }
-
-  if (import.meta.env.DEV) {
-    return `Erreur lors de l'envoi : ${message}`;
-  }
-
-  return "Impossible d'envoyer votre demande pour le moment. Veuillez réessayer ou nous contacter directement.";
-}
-
 function SoumissionPage() {
+  const { t } = useI18n();
+
+  const getSubmitErrorMessage = (code: SoumissionEmailErrorCode | "validation"): string => {
+    if (code === "validation") return t.soumission.errors.validation;
+    if (code === "smtp_config") {
+      return import.meta.env.DEV
+        ? t.soumission.errors.smtpSendDev
+        : t.soumission.errors.smtpConfig;
+    }
+    if (code === "smtp_send" && import.meta.env.DEV) return t.soumission.errors.smtpSendDev;
+    return t.soumission.errors.generic;
+  };
+
+  const getClientSubmitErrorMessage = (error: unknown): string => {
+    const message = error instanceof Error ? error.message : String(error);
+    if (/invalid email|Invalid email|validation.*email/i.test(message)) return t.soumission.errors.email;
+    if (/fetch|network|failed to fetch|NetworkError|ECONNREFUSED/i.test(message)) return t.soumission.errors.network;
+    if (import.meta.env.DEV) return `Erreur lors de l'envoi : ${message}`;
+    return t.soumission.errors.generic;
+  };
+
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<string[]>([]);
   const [form, setForm] = useState({
@@ -109,19 +95,23 @@ function SoumissionPage() {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-page-bg text-text">
+    <div className="min-h-screen overflow-x-hidden bg-white text-text">
+      <SeoHead page="soumission" />
       {/* Top bar */}
-      <header className="border-b border-line/40 bg-white/80 backdrop-blur-xl sticky top-0 z-40">
+      <header className="border-b border-line/40 bg-white/95 backdrop-blur-xl sticky top-0 z-40">
         <div className="max-w-5xl mx-auto flex items-center justify-between gap-2 px-4 sm:px-6 py-4 sm:py-5">
           <Link to="/" className="flex items-center gap-3 shrink-0 min-w-0">
             <img alt="IR Conciergerie" className="h-8 sm:h-9 w-auto object-contain" src={logoIrConciergerie} />
           </Link>
           <span className="hidden sm:inline text-[11px] uppercase tracking-[0.18em] text-muted font-semibold truncate">
-            Demande de soumission
+            {t.soumission.pageTitle}
           </span>
-          <span className="text-[10px] sm:text-[11px] text-muted font-medium shrink-0">
-            Étape {Math.min(step + 1, 3)} / 3
-          </span>
+          <div className="flex items-center gap-2 shrink-0">
+            <LanguageSwitcher compact />
+            <span className="text-[10px] sm:text-[11px] text-muted font-medium">
+              {t.soumission.stepOf} {Math.min(step + 1, 3)} / 3
+            </span>
+          </div>
         </div>
       </header>
 
@@ -131,7 +121,7 @@ function SoumissionPage() {
             {/* Stepper */}
             <div className="mb-14">
               <div className="flex items-center gap-2 mb-4">
-                {STEPS.map((_, i) => (
+                {t.soumission.steps.map((_, i) => (
                   <div key={i} className="flex-1 h-[3px] rounded-full bg-line/60 overflow-hidden">
                     <div
                       className="h-full bg-brand-primary transition-all duration-500"
@@ -141,7 +131,7 @@ function SoumissionPage() {
                 ))}
               </div>
               <div className="flex items-center justify-between gap-1 sm:gap-2 overflow-x-auto">
-                {STEPS.map((label, i) => (
+                {t.soumission.steps.map((label, i) => (
                   <span
                     key={label}
                     className={`text-[9px] sm:text-[11px] uppercase tracking-wider font-semibold transition shrink-0 ${
@@ -158,14 +148,15 @@ function SoumissionPage() {
             {step === 0 && (
               <section>
                 <h1 className="text-[32px] sm:text-[40px] md:text-[52px] font-bold tracking-tighter leading-[1.05] mb-4">
-                  Quels services vous intéressent ?
+                  {t.soumission.step0Title}
                 </h1>
                 <p className="text-muted text-lg mb-12 max-w-xl">
-                  Sélectionnez un ou plusieurs services. Nous adaptons notre accompagnement à vos besoins.
+                  {t.soumission.step0Desc}
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {SERVICES.map((s) => {
+                  {t.soumission.services.map((s) => {
+                    const icon = SERVICE_ICONS[s.id as keyof typeof SERVICE_ICONS];
                     const active = selected.includes(s.id);
                     return (
                       <button
@@ -184,7 +175,7 @@ function SoumissionPage() {
                               active ? "text-brand-primary" : "text-text/70"
                             }`}
                           >
-                            {s.icon}
+                            {icon}
                           </span>
                           <span
                             className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition ${
@@ -210,17 +201,18 @@ function SoumissionPage() {
             {step === 1 && (
               <section>
                 <h1 className="text-[32px] sm:text-[40px] md:text-[52px] font-bold tracking-tighter leading-[1.05] mb-4">
-                  Faisons connaissance.
+                  {t.soumission.step1Title}
                 </h1>
                 <p className="text-muted text-lg mb-12 max-w-xl">
-                  Vos coordonnées nous permettent de revenir vers vous avec une proposition personnalisée.
+                  {t.soumission.step1Desc}
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <Field label="Prénom" value={form.firstName} onChange={(v) => setForm({ ...form, firstName: v })} />
-                  <Field label="Nom" value={form.lastName} onChange={(v) => setForm({ ...form, lastName: v })} />
-                  <Field label="Courriel" type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
+                  <Field label={t.soumission.firstName} value={form.firstName} onChange={(v) => setForm({ ...form, firstName: v })} />
+                  <Field label={t.soumission.lastName} value={form.lastName} onChange={(v) => setForm({ ...form, lastName: v })} />
+                  <Field label={t.soumission.email} type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
                   <PhoneField
+                    label={t.soumission.phone}
                     countryId={form.phoneCountry}
                     phone={form.phone}
                     onCountryChange={(v) => setForm({ ...form, phoneCountry: v })}
@@ -233,42 +225,43 @@ function SoumissionPage() {
             {step === 2 && (
               <section>
                 <h1 className="text-[32px] sm:text-[40px] md:text-[52px] font-bold tracking-tighter leading-[1.05] mb-4">
-                  Parlez-nous de votre projet.
+                  {t.soumission.step2Title}
                 </h1>
                 <p className="text-muted text-lg mb-12 max-w-xl">
-                  Quelques détails pour préparer au mieux votre arrivée.
+                  {t.soumission.step2Desc}
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-                  <Field label="Date d'arrivée prévue" type="date" value={form.arrival} onChange={(v) => setForm({ ...form, arrival: v })} />
-                  <Field label="Ville d'installation" value={form.city} onChange={(v) => setForm({ ...form, city: v })} />
-                  <Field label="Nombre de personnes" type="number" value={form.people} onChange={(v) => setForm({ ...form, people: v })} />
+                  <Field label={t.soumission.arrival} type="date" value={form.arrival} onChange={(v) => setForm({ ...form, arrival: v })} />
+                  <Field label={t.soumission.city} value={form.city} onChange={(v) => setForm({ ...form, city: v })} />
+                  <Field label={t.soumission.people} type="number" value={form.people} onChange={(v) => setForm({ ...form, people: v })} />
                 </div>
 
                 <label className="block">
                   <span className="text-[11px] uppercase tracking-wider font-semibold text-muted mb-2 block">
-                    Précisions (optionnel)
+                    {t.soumission.notes}
                   </span>
                   <textarea
                     value={form.notes}
                     onChange={(e) => setForm({ ...form, notes: e.target.value })}
                     rows={5}
-                    placeholder="Contexte, attentes spécifiques, animaux, enfants..."
+                    placeholder={t.soumission.notesPlaceholder}
                     className="w-full rounded-xl border-2 border-line/60 bg-white px-4 py-3 text-[15px] focus:border-brand-primary focus:outline-none transition resize-none"
                   />
                 </label>
 
                 {/* Recap */}
-                <div className="mt-10 p-6 rounded-2xl bg-panel-bg border border-line/40">
+                <div className="mt-10 p-6 rounded-2xl bg-white border border-line/40">
                   <h4 className="text-[11px] uppercase tracking-wider font-semibold text-muted mb-4">
-                    Services sélectionnés
+                    {t.soumission.selectedServices}
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {selected.map((id) => {
-                      const s = SERVICES.find((x) => x.id === id)!;
+                      const s = t.soumission.services.find((x) => x.id === id)!;
+                      const icon = SERVICE_ICONS[id as keyof typeof SERVICE_ICONS];
                       return (
                         <span key={id} className="inline-flex items-center gap-1.5 bg-white border border-line/60 rounded-full px-3 py-1.5 text-sm font-medium">
-                          <span className="material-symbols-outlined text-[16px] text-brand-primary">{s.icon}</span>
+                          <span className="material-symbols-outlined text-[16px] text-brand-primary">{icon}</span>
                           {s.title}
                         </span>
                       );
@@ -293,7 +286,7 @@ function SoumissionPage() {
                 className="text-sm font-semibold text-text/70 hover:text-brand-primary transition disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center sm:justify-start gap-2"
               >
                 <span className="material-symbols-outlined text-[18px]">arrow_back</span>
-                Précédent
+                {t.soumission.previous}
               </button>
 
               {step < 2 ? (
@@ -303,7 +296,7 @@ function SoumissionPage() {
                   disabled={!canNext}
                   className="bg-brand-primary text-white rounded-full hover:bg-brand-primary/90 transition-all flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 text-[12px] font-bold uppercase tracking-wider shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  Continuer
+                  {t.soumission.continue}
                   <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                 </button>
               ) : (
@@ -313,7 +306,7 @@ function SoumissionPage() {
                   disabled={submitting}
                   className="bg-brand-primary text-white rounded-full hover:bg-brand-primary/90 transition-all flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 text-[12px] font-bold uppercase tracking-wider shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {submitting ? "Envoi en cours..." : "Envoyer ma demande"}
+                  {submitting ? t.soumission.submitting : t.soumission.submit}
                   <span className="material-symbols-outlined text-[18px]">
                     {submitting ? "hourglass_top" : "send"}
                   </span>
@@ -329,17 +322,17 @@ function SoumissionPage() {
               <span className="material-symbols-outlined text-[40px] text-brand-primary">check</span>
             </div>
             <h1 className="text-[32px] sm:text-[44px] md:text-[56px] font-bold tracking-tighter leading-[1.05] mb-4">
-              Merci, {form.firstName || "à très bientôt"}.
+              {t.soumission.thankYou}, {form.firstName || "…"}.
             </h1>
             <p className="text-muted text-lg max-w-md mx-auto mb-10">
-              Votre demande a bien été transmise à notre équipe. Nous revenons vers vous sous 24&nbsp;heures à l'adresse{" "}
+              {t.soumission.thankYouBody}{" "}
               <strong className="text-text">{form.email}</strong>.
             </p>
             <Link
               to="/"
               className="inline-flex items-center gap-2 bg-brand-primary text-white rounded-full hover:bg-brand-primary/90 transition-all px-8 py-3.5 text-[12px] font-bold uppercase tracking-wider shadow-md"
             >
-              Retour à l'accueil
+              {t.soumission.backHome}
             </Link>
           </div>
         )}
@@ -349,8 +342,9 @@ function SoumissionPage() {
 }
 
 function PhoneField({
-  countryId, phone, onCountryChange, onPhoneChange,
+  label, countryId, phone, onCountryChange, onPhoneChange,
 }: {
+  label: string;
   countryId: string;
   phone: string;
   onCountryChange: (v: string) => void;
@@ -359,7 +353,7 @@ function PhoneField({
   return (
     <label className="block">
       <span className="text-[11px] uppercase tracking-wider font-semibold text-muted mb-2 block">
-        Téléphone
+        {label}
       </span>
       <div className="flex gap-2">
         <PhoneCountrySelect

@@ -46,16 +46,23 @@ export function PhoneCountrySelect({ value, onChange, className }: PhoneCountryS
           <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[280px] p-0" align="start">
-        <Command>
-          <CommandInput placeholder="Rechercher un pays ou un indicatif..." />
-          <CommandList>
+      <PopoverContent
+        className="z-[100] w-[280px] overflow-hidden border-2 border-line/60 bg-white p-0 shadow-xl"
+        align="start"
+      >
+        <Command className="bg-white">
+          <CommandInput
+            placeholder="Rechercher un pays ou un indicatif..."
+            className="bg-white"
+          />
+          <CommandList className="bg-white">
             <CommandEmpty>Aucun pays trouvé.</CommandEmpty>
             <CommandGroup>
               {DIAL_CODES.map((entry) => (
                 <CommandItem
                   key={entry.id}
                   value={`${entry.country} ${entry.code}`}
+                  className="bg-white data-[selected=true]:bg-soft-card"
                   onSelect={() => {
                     onChange(entry.id);
                     setOpen(false);

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://conciergerie.ir-immigration.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://conciergerie.ir-immigration.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://conciergerie.ir-immigration.com/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://conciergerie.ir-immigration.com/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://conciergerie.ir-immigration.com/?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://conciergerie.ir-immigration.com/?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="ln" href="https://conciergerie.ir-immigration.com/?lang=ln" />
+    <xhtml:link rel="alternate" hreflang="sw" href="https://conciergerie.ir-immigration.com/?lang=sw" />
+    <xhtml:link rel="alternate" hreflang="wo" href="https://conciergerie.ir-immigration.com/?lang=wo" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://conciergerie.ir-immigration.com/" />
+  </url>
+  <url>
+    <loc>https://conciergerie.ir-immigration.com/soumission</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://conciergerie.ir-immigration.com/soumission" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://conciergerie.ir-immigration.com/soumission?lang=en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://conciergerie.ir-immigration.com/soumission?lang=es" />
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://conciergerie.ir-immigration.com/soumission?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://conciergerie.ir-immigration.com/soumission?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="ln" href="https://conciergerie.ir-immigration.com/soumission?lang=ln" />
+    <xhtml:link rel="alternate" hreflang="sw" href="https://conciergerie.ir-immigration.com/soumission?lang=sw" />
+    <xhtml:link rel="alternate" hreflang="wo" href="https://conciergerie.ir-immigration.com/soumission?lang=wo" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://conciergerie.ir-immigration.com/soumission" />
+  </url>
+</urlset>

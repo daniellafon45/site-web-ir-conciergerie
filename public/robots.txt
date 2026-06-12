@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://conciergerie.ir-immigration.com/sitemap.xml
