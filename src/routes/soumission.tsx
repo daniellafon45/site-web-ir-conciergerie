@@ -98,18 +98,18 @@ function SoumissionPage() {
     <div className="min-h-screen overflow-x-hidden bg-white text-text">
       <SeoHead page="soumission" />
       {/* Top bar */}
-      <header className="border-b border-line/40 bg-white/95 backdrop-blur-xl sticky top-0 z-40">
-        <div className="max-w-5xl mx-auto flex items-center justify-between gap-2 px-4 sm:px-6 py-4 sm:py-5">
-          <Link to="/" className="flex items-center gap-3 shrink-0 min-w-0">
+      <header className="border-b border-line/40 bg-white/95 backdrop-blur-xl sticky top-0 z-40 pt-[env(safe-area-inset-top)]">
+        <div className="max-w-5xl mx-auto flex items-center justify-between gap-2 px-3 sm:px-6 py-3 sm:py-5">
+          <Link to="/" className="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0">
             <img alt="IR Conciergerie" className="h-8 sm:h-9 w-auto object-contain" src={logoIrConciergerie} />
           </Link>
-          <span className="hidden sm:inline text-[11px] uppercase tracking-[0.18em] text-muted font-semibold truncate">
+          <span className="hidden md:inline text-[11px] uppercase tracking-[0.18em] text-muted font-semibold truncate max-w-[12rem] lg:max-w-none">
             {t.soumission.pageTitle}
           </span>
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <LanguageSwitcher compact />
-            <span className="text-[10px] sm:text-[11px] text-muted font-medium">
-              {t.soumission.stepOf} {Math.min(step + 1, 3)} / 3
+            <span className="text-[9px] sm:text-[11px] text-muted font-medium whitespace-nowrap">
+              {t.soumission.stepOf} {Math.min(step + 1, 3)}/3
             </span>
           </div>
         </div>
@@ -130,11 +130,11 @@ function SoumissionPage() {
                   </div>
                 ))}
               </div>
-              <div className="flex items-center justify-between gap-1 sm:gap-2 overflow-x-auto">
+              <div className="flex items-start justify-between gap-2 sm:gap-3">
                 {t.soumission.steps.map((label, i) => (
                   <span
                     key={label}
-                    className={`text-[9px] sm:text-[11px] uppercase tracking-wider font-semibold transition shrink-0 ${
+                    className={`flex-1 min-w-0 text-center text-[9px] sm:text-[11px] uppercase tracking-wider font-semibold transition leading-snug ${
                       i <= step ? "text-brand-primary" : "text-muted"
                     }`}
                   >

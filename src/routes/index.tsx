@@ -84,6 +84,7 @@ const PILLAR_BACKGROUNDS = [pillarAccueilVip, pillarLogement, pillarTranquillite
 function Index() {
   const { t } = useI18n();
   const [activePillar, setActivePillar] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pillars = t.pillars.pillars.map((p, i) => ({ ...p, bg: PILLAR_BACKGROUNDS[i] }));
   const current = pillars[activePillar];
   const trustItems = t.trust;
@@ -92,32 +93,65 @@ function Index() {
     <div className="min-h-screen overflow-x-hidden bg-white text-text">
       <SeoHead page="home" />
       {/* Floating Nav */}
-      <header className="fixed top-4 sm:top-6 left-0 right-0 z-50 flex items-center justify-center px-4 sm:px-6 pointer-events-none">
-        <div className="pointer-events-auto w-full max-w-[1280px] flex items-center justify-between gap-3 sm:gap-4 bg-white/95 backdrop-blur-xl rounded-full px-3 sm:px-8 py-2.5 sm:py-3 shadow-lg border border-line/20 min-h-[4.5rem] sm:min-h-20 sm:h-20">
-          <div className="flex items-center gap-4 sm:gap-10 pl-2 sm:pl-3 min-w-0">
-            <Link to="/" className="shrink-0">
-              <img alt="IR Conciergerie" className="h-10 sm:h-12 w-auto object-contain" src={IMG.logo} />
-            </Link>
-            <nav className="hidden md:flex items-center gap-8 lg:gap-10">
-              <a className="text-[13px] lg:text-sm font-semibold tracking-[0.06em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#services">{t.nav.services}</a>
-              <a className="text-[13px] lg:text-sm font-semibold tracking-[0.06em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#about">{t.nav.about}</a>
-              <a className="text-[13px] lg:text-sm font-semibold tracking-[0.06em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#contact">{t.nav.contact}</a>
+      <header className="fixed top-[max(0.75rem,env(safe-area-inset-top))] sm:top-6 left-0 right-0 z-50 flex items-center justify-center px-3 sm:px-6 pointer-events-none">
+        <div className="pointer-events-auto relative w-full max-w-[1280px]">
+          <div className="flex items-center justify-between gap-2 sm:gap-4 bg-white/95 backdrop-blur-xl rounded-full px-2.5 sm:px-8 py-2 sm:py-3 shadow-lg border border-line/20 min-h-[3.75rem] sm:min-h-20 sm:h-20">
+            <div className="flex items-center gap-2 sm:gap-10 pl-1 sm:pl-3 min-w-0">
+              <Link to="/" className="shrink-0" onClick={() => setMobileMenuOpen(false)}>
+                <img alt="IR Conciergerie" className="h-9 w-auto object-contain sm:h-12" src={IMG.logo} />
+              </Link>
+              <nav className="hidden md:flex items-center gap-8 lg:gap-10">
+                <a className="text-[13px] lg:text-sm font-semibold tracking-[0.06em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#services">{t.nav.services}</a>
+                <a className="text-[13px] lg:text-sm font-semibold tracking-[0.06em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#about">{t.nav.about}</a>
+                <a className="text-[13px] lg:text-sm font-semibold tracking-[0.06em] text-text/70 hover:text-brand-primary transition-colors uppercase" href="#contact">{t.nav.contact}</a>
+              </nav>
+            </div>
+            <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 mr-0.5 sm:mr-2">
+              <button
+                type="button"
+                className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-line/60 text-text/80 hover:text-brand-primary transition-colors"
+                aria-expanded={mobileMenuOpen}
+                aria-label="Menu"
+                onClick={() => setMobileMenuOpen((open) => !open)}
+              >
+                <span className="material-symbols-outlined text-[22px]">{mobileMenuOpen ? "close" : "menu"}</span>
+              </button>
+              <LanguageSwitcher compact />
+              <Link
+                to="/soumission"
+                onClick={() => setMobileMenuOpen(false)}
+                className="bg-brand-primary text-white rounded-full hover:bg-brand-primary/90 transition-all shrink-0 flex items-center px-3 sm:px-8 text-[9px] sm:text-xs h-10 sm:h-12 font-semibold uppercase tracking-wider shadow-md"
+              >
+                <span className="sm:hidden">{t.nav.ctaShort}</span>
+                <span className="hidden sm:inline">{t.nav.cta}</span>
+              </Link>
+            </div>
+          </div>
+          {mobileMenuOpen && (
+            <nav className="md:hidden pointer-events-auto absolute left-0 right-0 top-[calc(100%+0.5rem)] rounded-2xl border border-line/20 bg-white/98 backdrop-blur-xl p-4 shadow-xl flex flex-col gap-1">
+              {[
+                { href: "#services", label: t.nav.services },
+                { href: "#about", label: t.nav.about },
+                { href: "#contact", label: t.nav.contact },
+              ].map(({ href, label }) => (
+                <a
+                  key={href}
+                  href={href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-wide text-text/80 hover:bg-soft-card hover:text-brand-primary transition-colors"
+                >
+                  {label}
+                </a>
+              ))}
             </nav>
-          </div>
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0 mr-1 sm:mr-2">
-            <LanguageSwitcher compact />
-            <Link to="/soumission" className="bg-brand-primary text-white rounded-full hover:bg-brand-primary/90 transition-all shrink-0 flex items-center px-4 sm:px-8 text-[10px] sm:text-xs h-11 sm:h-12 font-semibold uppercase tracking-wider shadow-md">
-              <span className="sm:hidden">{t.nav.ctaShort}</span>
-              <span className="hidden sm:inline">{t.nav.cta}</span>
-            </Link>
-          </div>
+          )}
         </div>
       </header>
 
       <main>
         {/* Hero */}
-        <section className="pt-32 sm:pt-40 md:pt-[248px] px-4 sm:px-6 md:px-10 max-w-[1728px] mx-auto flex flex-col items-center text-center pb-16 sm:pb-24 md:pb-[200px]">
-          <h1 className="text-balance max-w-5xl mb-8 sm:mb-12 md:mb-16 tracking-tighter text-[1.75rem] leading-[1.08] sm:text-4xl md:text-[64px] lg:text-[82px] md:leading-[1.05] font-bold px-1">
+        <section className="pt-28 sm:pt-40 md:pt-[248px] px-4 sm:px-6 md:px-10 max-w-[1728px] mx-auto flex flex-col items-center text-center pb-16 sm:pb-24 md:pb-[200px]">
+          <h1 className="text-balance max-w-5xl mb-8 sm:mb-12 md:mb-16 tracking-tighter text-[1.75rem] leading-[1.1] sm:text-4xl md:text-[64px] lg:text-[82px] md:leading-[1.05] font-bold px-1">
             {t.hero.title}
           </h1>
           <div className="w-full max-w-[1492px] overflow-hidden shadow-2xl relative rounded-2xl sm:rounded-[32px] md:rounded-[40px] h-[220px] sm:h-[360px] md:h-[600px] lg:h-[800px]">
@@ -140,12 +174,12 @@ function Index() {
         </section>
 
         {/* Floating Collage */}
-        <section className="w-full max-w-[1728px] mx-auto px-6 lg:px-10 pt-20 pb-8 lg:pt-32 lg:pb-12">
-          <div className="text-center mb-12 lg:mb-20 relative z-30 max-w-4xl mx-auto">
-            <h2 className="font-bold tracking-tighter leading-[0.95] text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[80px]">
+        <section className="w-full max-w-[1728px] mx-auto px-4 sm:px-6 lg:px-10 pt-16 sm:pt-20 pb-8 lg:pt-32 lg:pb-12">
+          <div className="text-center mb-10 sm:mb-12 lg:mb-20 relative z-30 max-w-4xl mx-auto px-1">
+            <h2 className="font-bold tracking-tighter leading-[0.95] text-3xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl 2xl:text-[80px]">
               {t.premium.title}
             </h2>
-            <p className="text-lg lg:text-2xl xl:text-[32px] font-medium text-muted mt-3 lg:mt-4">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-[32px] font-medium text-muted mt-3 lg:mt-4 text-balance px-2">
               {t.premium.subtitle}
             </p>
           </div>
@@ -234,7 +268,7 @@ function Index() {
           </div>
 
           {/* Mobile / tablet grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
             <div className="relative h-56 rounded-[24px] overflow-hidden border border-line/20 shadow-lg group">
               <img className="w-full h-full object-cover" src={IMG.c1} alt="Panneau Arrivals à l'aéroport" />
               <div className="absolute inset-0 z-[1] bg-black/20 pointer-events-none" />
@@ -301,7 +335,7 @@ function Index() {
               <CollageSoumissionButton alwaysVisible />
             </div>
 
-            <div className="sm:col-span-2 bg-white border border-line/20 shadow-lg rounded-[24px] flex items-center gap-4 p-4">
+            <div className="md:col-span-2 bg-white border border-line/20 shadow-lg rounded-[24px] flex items-center gap-4 p-4">
               <div className="w-10 h-10 rounded-full overflow-hidden border border-line/20 shrink-0">
                 <img className="w-full h-full object-cover" src={IMG.avatar} alt="" />
               </div>
@@ -433,7 +467,7 @@ function Index() {
               <p className="text-base sm:text-lg text-muted leading-relaxed">
                 {t.about.body}
               </p>
-              <p className="text-xl sm:text-2xl md:text-[32px] lg:text-[40px] tracking-tight font-bold leading-[1.2] break-words">
+              <p className="text-lg sm:text-xl md:text-2xl lg:text-[32px] xl:text-[40px] tracking-tight font-bold leading-[1.25] break-words">
                 {t.about.immigration}{" "}
                 <a
                   href="mailto:direction@ir-immigration.com"
@@ -454,10 +488,10 @@ function Index() {
 
         {/* Testimonial */}
         <section className="py-20 sm:py-32 lg:py-40 px-4 sm:px-6 md:px-10 max-w-[1200px] mx-auto flex flex-col items-center text-center">
-          <h2 className="text-2xl sm:text-[32px] md:text-[56px] leading-[1.15] sm:leading-[1.1] tracking-tight mb-10 sm:mb-16 text-balance font-normal italic px-2">
+          <h2 className="text-xl sm:text-[28px] md:text-[40px] lg:text-[56px] leading-[1.2] sm:leading-[1.15] tracking-tight mb-10 sm:mb-16 text-balance font-normal italic px-2">
             &ldquo;{t.testimonial.quote}&rdquo;
           </h2>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
             <div className="w-16 h-16 rounded-full overflow-hidden shadow-md">
               <img className="w-full h-full object-cover" src={IMG.testimonial} alt="" />
             </div>
@@ -548,7 +582,7 @@ function Index() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-white/10 pt-8 text-sm text-white/40 flex justify-between flex-wrap gap-4">
+          <div className="border-t border-white/10 pt-8 text-sm text-white/40 flex flex-col sm:flex-row sm:justify-between items-center sm:items-start gap-3 text-center sm:text-left">
             <span>{t.footer.rights}</span>
             <span>{t.footer.cities}</span>
           </div>

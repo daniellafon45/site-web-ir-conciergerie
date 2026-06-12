@@ -24,8 +24,10 @@ export function LanguageSwitcher({ compact = false, className = "" }: LanguageSw
       </span>
       <span
         className={cn(
-          "relative inline-flex items-center rounded-full border border-line/60 bg-white shadow-sm",
-          compact ? "h-11 min-w-[7.5rem] max-w-[13rem] sm:h-12" : "h-10 min-w-[9rem]",
+          "relative inline-flex max-w-[42vw] items-center rounded-full border border-line/60 bg-white shadow-sm sm:max-w-none",
+          compact
+            ? "h-10 min-w-[5.75rem] max-w-[7.5rem] sm:h-12 sm:min-w-[7.5rem] sm:max-w-[13rem]"
+            : "h-10 min-w-[7rem] max-w-[9rem] sm:min-w-[9rem] sm:max-w-none",
         )}
       >
         <select
@@ -33,10 +35,10 @@ export function LanguageSwitcher({ compact = false, className = "" }: LanguageSw
           onChange={(e) => setLocale(e.target.value as Locale)}
           aria-label="Choisir la langue"
           className={cn(
-            "h-full w-full cursor-pointer appearance-none truncate rounded-full bg-transparent text-text transition focus:outline-none",
+            "h-full w-full min-w-0 cursor-pointer appearance-none truncate rounded-full bg-transparent text-text transition focus:outline-none",
             compact
-              ? "pl-4 pr-8 text-left text-[10px] font-semibold tracking-wide sm:text-xs"
-              : "pl-3 pr-7 text-left text-[11px] font-medium sm:text-sm",
+              ? "pl-3 pr-7 text-left text-[9px] font-semibold tracking-wide sm:pl-4 sm:pr-8 sm:text-xs"
+              : "pl-3 pr-7 text-left text-[10px] font-medium sm:text-sm",
           )}
         >
           {LOCALES.map((code) => (
