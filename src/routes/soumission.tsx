@@ -99,19 +99,28 @@ function SoumissionPage() {
       <SeoHead page="soumission" />
       {/* Top bar */}
       <header className="border-b border-line/40 bg-white/95 backdrop-blur-xl sticky top-0 z-40 pt-[env(safe-area-inset-top)]">
-        <div className="max-w-5xl mx-auto flex items-center justify-between gap-2 px-3 sm:px-6 py-3 sm:py-5">
-          <Link to="/" className="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0">
-            <img alt="IR Conciergerie" className="h-8 sm:h-9 w-auto object-contain" src={logoIrConciergerie} />
+        <div className="max-w-5xl mx-auto flex items-center justify-between gap-3 px-3 sm:px-6 py-3 sm:py-5">
+          <Link to="/" className="flex min-w-0 shrink items-center gap-2 sm:gap-3">
+            <img
+              alt="IR Conciergerie"
+              className="h-8 w-auto max-w-[6.75rem] object-contain object-left sm:max-w-[8rem] sm:h-9 md:max-w-none"
+              src={logoIrConciergerie}
+            />
           </Link>
-          <span className="hidden md:inline text-[11px] uppercase tracking-[0.18em] text-muted font-semibold truncate max-w-[12rem] lg:max-w-none">
+          <span className="hidden lg:inline text-[11px] uppercase tracking-[0.18em] text-muted font-semibold truncate max-w-[12rem] xl:max-w-none">
             {t.soumission.pageTitle}
           </span>
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <LanguageSwitcher compact />
-            <span className="text-[9px] sm:text-[11px] text-muted font-medium whitespace-nowrap">
+          <div className="flex shrink-0 items-center gap-2">
+            <div className="hidden sm:block">
+              <LanguageSwitcher compact />
+            </div>
+            <span className="text-[10px] sm:text-[11px] text-muted font-medium whitespace-nowrap rounded-full border border-line/50 px-2.5 py-1.5 sm:border-0 sm:px-0 sm:py-0">
               {t.soumission.stepOf} {Math.min(step + 1, 3)}/3
             </span>
           </div>
+        </div>
+        <div className="sm:hidden border-t border-line/30 px-3 py-2.5">
+          <LanguageSwitcher menu />
         </div>
       </header>
 
