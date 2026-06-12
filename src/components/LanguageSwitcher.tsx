@@ -18,7 +18,7 @@ export function LanguageSwitcher({ compact = false, className = "" }: LanguageSw
       <span
         className={cn(
           "relative inline-flex items-center rounded-full border border-line/60 bg-white",
-          compact ? "h-9 min-w-[4.5rem]" : "h-10 min-w-[9rem]",
+          compact ? "h-9 min-w-[7rem] max-w-[11rem]" : "h-10 min-w-[9rem]",
         )}
       >
         <select
@@ -26,15 +26,15 @@ export function LanguageSwitcher({ compact = false, className = "" }: LanguageSw
           onChange={(e) => setLocale(e.target.value as Locale)}
           aria-label="Choisir la langue"
           className={cn(
-            "h-full w-full cursor-pointer appearance-none rounded-full bg-transparent font-medium text-text transition focus:outline-none",
+            "h-full w-full cursor-pointer appearance-none truncate rounded-full bg-transparent font-medium text-text transition focus:outline-none",
             compact
-              ? "pl-3 pr-6 text-center text-[11px] sm:text-xs"
+              ? "pl-3 pr-7 text-left text-[10px] sm:text-[11px]"
               : "pl-3 pr-7 text-left text-[11px] sm:text-sm",
           )}
         >
           {LOCALES.map((code) => (
             <option key={code} value={code}>
-              {compact ? code.toUpperCase() : LOCALE_LABELS[code]}
+              {LOCALE_LABELS[code]}
             </option>
           ))}
         </select>
