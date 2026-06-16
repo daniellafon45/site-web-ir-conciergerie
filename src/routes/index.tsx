@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { RentalPlatformLinks } from "@/components/RentalPlatformLinks";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BlogPostCard } from "@/components/blog/BlogPostCard";
@@ -91,10 +91,12 @@ const IMG = {
 function CollageSoumissionButton({
   alwaysVisible = false,
   showOnMobile = false,
+  centered = false,
   className = "",
 }: {
   alwaysVisible?: boolean;
   showOnMobile?: boolean;
+  centered?: boolean;
   className?: string;
 }) {
   const { t } = useI18n();
@@ -104,14 +106,47 @@ function CollageSoumissionButton({
       ? "opacity-100 scale-100 lg:opacity-0 lg:scale-95 lg:group-hover:opacity-100 lg:group-hover:scale-100"
       : "opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100";
 
+  const positionClass = centered
+    ? "top-1/2 -translate-y-1/2 bottom-auto"
+    : "max-lg:bottom-4 max-lg:top-auto max-lg:translate-y-0 lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto";
+
   return (
     <Link
       to="/soumission"
-      className={`absolute left-1/2 z-20 inline-flex items-center justify-center gap-1 bg-brand-primary text-white rounded-full font-semibold uppercase tracking-wider hover:bg-brand-primary/90 shadow-lg transition-all duration-300 max-w-[calc(100%-1.5rem)] text-[9px] leading-tight px-3 py-2 sm:text-[10px] sm:px-4 sm:py-2 sm:gap-1.5 sm:leading-normal sm:max-w-none whitespace-normal text-center sm:whitespace-nowrap -translate-x-1/2 max-lg:bottom-4 max-lg:top-auto max-lg:translate-y-0 lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto ${visibilityClass} ${className}`}
+      className={`absolute left-1/2 z-30 inline-flex items-center justify-center gap-1.5 bg-brand-primary text-white rounded-full font-semibold uppercase tracking-wider hover:bg-brand-primary/90 hover:scale-105 shadow-lg transition-all duration-300 max-w-[calc(100%-1.5rem)] text-[10px] leading-tight px-4 py-2.5 sm:text-xs sm:px-5 sm:py-2.5 sm:gap-2 sm:leading-normal sm:max-w-none whitespace-normal text-center sm:whitespace-nowrap -translate-x-1/2 ${positionClass} ${visibilityClass} ${className}`}
     >
       {t.premium.requestQuote}
-      <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+      <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
     </Link>
+  );
+}
+
+function CollageMediaCard({
+  src,
+  alt,
+  className = "h-56",
+  buttonClassName = "",
+  children,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  buttonClassName?: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div
+      className={`relative rounded-[24px] overflow-hidden border border-line/20 shadow-lg group ${className}`}
+    >
+      <img
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        src={src}
+        alt={alt}
+      />
+      <div className="absolute inset-0 z-[1] bg-black/15 group-hover:bg-black/35 transition-colors duration-300 pointer-events-none" />
+      <CollageSoumissionButton alwaysVisible centered className={buttonClassName} />
+      {children}
+    </div>
   );
 }
 
@@ -155,7 +190,7 @@ function Index() {
   }, [pillarAutoPlay, pillars.length]);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white text-text">
+    <div className="min-h-screen bg-white text-text">
       <SeoHead page="home" />
       <SiteFloatingNav />
 
@@ -282,28 +317,22 @@ function Index() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
             {[
               (
-                <div key="arrival" className="relative h-56 rounded-[24px] overflow-hidden border border-line/20 shadow-lg group">
-                  <img className="w-full h-full object-cover" src={arrivalImg} alt={t.premium.arrivalImageAlt} />
-                  <div className="absolute inset-0 z-[1] bg-black/20 pointer-events-none" />
-                  <CollageSoumissionButton alwaysVisible className="max-lg:bottom-[5.5rem]" />
-                  <div className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-xl border border-white rounded-xl p-3 shadow-sm">
+                <CollageMediaCard key="arrival" src={arrivalImg} alt={t.premium.arrivalImageAlt}>
+                  <div className="absolute bottom-3 left-3 right-3 z-10 bg-white/90 backdrop-blur-xl border border-white rounded-xl p-3 shadow-sm pointer-events-none">
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-[10px] text-brand-primary font-bold uppercase tracking-wider">{t.premium.arrival}</span>
                       <span className="text-[10px] text-text font-bold">100%</span>
                     </div>
                     <div className="w-full bg-line/30 rounded-full h-1.5"><div className="bg-brand-primary w-full h-1.5 rounded-full" /></div>
                   </div>
-                </div>
+                </CollageMediaCard>
               ),
               (
-                <div key="home" className="relative h-56 rounded-[24px] overflow-hidden border border-line/20 shadow-lg group">
-                  <img className="w-full h-full object-cover" src={IMG.c2} alt="Maison résidentielle moderne" />
-                  <div className="absolute inset-0 z-[1] bg-black/20 pointer-events-none" />
-                  <CollageSoumissionButton alwaysVisible />
-                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md border border-white flex items-center justify-center shadow-sm">
+                <CollageMediaCard key="home" src={IMG.c2} alt="Maison résidentielle moderne">
+                  <div className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md border border-white flex items-center justify-center shadow-sm pointer-events-none">
                     <span className="material-symbols-outlined text-brand-primary text-sm">home</span>
                   </div>
-                </div>
+                </CollageMediaCard>
               ),
               (
                 <div key="assistance" className="rounded-[24px] bg-white border border-line/20 shadow-lg p-5 flex flex-col justify-center h-48">
@@ -325,33 +354,28 @@ function Index() {
                 </div>
               ),
               (
-                <div key="transport" className="relative h-48 rounded-[24px] overflow-hidden border border-line/20 shadow-lg group">
-                  <img className="w-full h-full object-cover" src={IMG.c4} alt="Cadillac Escalade noire de luxe" />
-                  <div className="absolute inset-0 z-[1] bg-black/20 pointer-events-none" />
-                  <CollageSoumissionButton alwaysVisible />
-                  <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-xl px-3 py-1.5 rounded-full border border-white shadow-sm flex items-center gap-2">
+                <CollageMediaCard key="transport" src={IMG.c4} alt="Cadillac Escalade noire de luxe" className="h-48">
+                  <div className="absolute top-3 left-3 z-10 bg-white/90 backdrop-blur-xl px-3 py-1.5 rounded-full border border-white shadow-sm flex items-center gap-2 pointer-events-none">
                     <div className="w-2 h-2 rounded-full bg-green-500" />
                     <span className="text-[10px] font-bold uppercase tracking-wider">{t.premium.secureTransport}</span>
                   </div>
-                </div>
+                </CollageMediaCard>
               ),
               (
-                <div key="inspection" className="relative h-48 rounded-[24px] overflow-hidden border border-line/20 shadow-lg group">
-                  <img className="w-full h-full object-cover" src={IMG.c5} alt="Inspection de maison avec loupe" />
-                  <div className="absolute inset-0 z-[1] bg-black/20 pointer-events-none" />
-                  <CollageSoumissionButton alwaysVisible className="max-lg:bottom-14" />
-                  <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-xl px-3 py-1.5 rounded-full border border-white shadow-sm flex items-center gap-2">
+                <CollageMediaCard key="inspection" src={IMG.c5} alt="Inspection de maison avec loupe" className="h-48">
+                  <div className="absolute bottom-3 left-3 z-10 bg-white/90 backdrop-blur-xl px-3 py-1.5 rounded-full border border-white shadow-sm flex items-center gap-2 pointer-events-none">
                     <span className="material-symbols-outlined text-brand-primary text-sm">verified</span>
                     <span className="text-[10px] font-bold uppercase tracking-wider">{t.premium.guaranteedInspection}</span>
                   </div>
-                </div>
+                </CollageMediaCard>
               ),
               (
-                <div key="family" className="relative h-48 rounded-[24px] overflow-hidden border border-line/20 shadow-lg group">
-                  <img className="w-full h-full object-cover" src={installationFamille} alt="Famille heureuse dans leur nouveau logement" />
-                  <div className="absolute inset-0 z-[1] bg-black/20 pointer-events-none" />
-                  <CollageSoumissionButton alwaysVisible />
-                </div>
+                <CollageMediaCard
+                  key="family"
+                  src={installationFamille}
+                  alt="Famille heureuse dans leur nouveau logement"
+                  className="h-48"
+                />
               ),
               (
                 <div key="testimonial" className="md:col-span-2 bg-white border border-line/20 shadow-lg rounded-[24px] flex items-center gap-4 p-4">

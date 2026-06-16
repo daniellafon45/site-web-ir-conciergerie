@@ -50,14 +50,26 @@
   * {
     border-color: var(--color-line);
   }
-  html, body {
+  html {
+    background-color: var(--color-page-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html::-webkit-scrollbar {
+    display: none;
+  }
+  body {
     background-color: var(--color-page-bg);
     color: var(--color-text);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-  }
-  body {
+    min-height: 100%;
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
   }
