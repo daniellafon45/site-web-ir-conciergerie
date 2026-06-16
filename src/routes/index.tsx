@@ -88,23 +88,26 @@ const IMG = {
   s4: serviceInstallationComplete,
 };
 
+type SoumissionButtonMode = "hover" | "alwaysOnMobile" | "tapOnMobile";
+
+const SOUMISSION_BUTTON_VISIBILITY: Record<SoumissionButtonMode, string> = {
+  hover: "opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100",
+  alwaysOnMobile:
+    "opacity-100 scale-100 lg:opacity-0 lg:scale-95 lg:group-hover:opacity-100 lg:group-hover:scale-100",
+  tapOnMobile:
+    "max-lg:opacity-0 max-lg:scale-95 max-lg:pointer-events-none max-lg:group-[.is-active]:opacity-100 max-lg:group-[.is-active]:scale-100 max-lg:group-[.is-active]:pointer-events-auto lg:opacity-0 lg:scale-95 lg:group-hover:opacity-100 lg:group-hover:scale-100",
+};
+
 function CollageSoumissionButton({
-  alwaysVisible = false,
-  showOnMobile = false,
+  mode = "hover",
   centered = false,
   className = "",
 }: {
-  alwaysVisible?: boolean;
-  showOnMobile?: boolean;
+  mode?: SoumissionButtonMode;
   centered?: boolean;
   className?: string;
 }) {
   const { t } = useI18n();
-  const visibilityClass = alwaysVisible
-    ? "opacity-100 scale-100"
-    : showOnMobile
-      ? "opacity-100 scale-100 lg:opacity-0 lg:scale-95 lg:group-hover:opacity-100 lg:group-hover:scale-100"
-      : "opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100";
 
   const positionClass = centered
     ? "top-1/2 -translate-y-1/2 bottom-auto"
@@ -113,11 +116,43 @@ function CollageSoumissionButton({
   return (
     <Link
       to="/soumission"
-      className={`absolute left-1/2 z-30 inline-flex items-center justify-center gap-1.5 bg-brand-primary text-white rounded-full font-semibold uppercase tracking-wider hover:bg-brand-primary/90 hover:scale-105 shadow-lg transition-all duration-300 max-w-[calc(100%-1.5rem)] text-[10px] leading-tight px-4 py-2.5 sm:text-xs sm:px-5 sm:py-2.5 sm:gap-2 sm:leading-normal sm:max-w-none whitespace-normal text-center sm:whitespace-nowrap -translate-x-1/2 ${positionClass} ${visibilityClass} ${className}`}
+      onClick={(e) => e.stopPropagation()}
+      className={`absolute left-1/2 z-30 inline-flex items-center justify-center gap-1.5 bg-brand-primary text-white rounded-full font-semibold uppercase tracking-wider hover:bg-brand-primary/90 hover:scale-105 shadow-lg transition-all duration-300 max-w-[calc(100%-1.5rem)] text-[10px] leading-tight px-4 py-2.5 sm:text-xs sm:px-5 sm:py-2.5 sm:gap-2 sm:leading-normal sm:max-w-none whitespace-normal text-center sm:whitespace-nowrap -translate-x-1/2 ${positionClass} ${SOUMISSION_BUTTON_VISIBILITY[mode]} ${className}`}
     >
       {t.premium.requestQuote}
       <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
     </Link>
+  );
+}
+
+function TapRevealMediaShell({
+  className = "",
+  children,
+}: {
+  className?: string;
+  children: ReactNode;
+}) {
+  const [active, setActive] = useState(false);
+
+  const toggleActive = () => setActive((value) => !value);
+
+  return (
+    <div
+      className={`group relative overflow-hidden ${active ? "is-active" : ""} ${className}`}
+      onClick={toggleActive}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleActive();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+    >
+      {children}
+      <div className="absolute inset-0 z-[1] bg-black/15 max-lg:group-[.is-active]:bg-black/35 lg:group-hover:bg-black/35 transition-colors duration-300 pointer-events-none" />
+      <CollageSoumissionButton mode="tapOnMobile" centered />
+    </div>
   );
 }
 
@@ -134,17 +169,30 @@ function CollageMediaCard({
   buttonClassName?: string;
   children?: ReactNode;
 }) {
+  const [active, setActive] = useState(false);
+
+  const toggleActive = () => setActive((value) => !value);
+
   return (
     <div
-      className={`relative rounded-[24px] overflow-hidden border border-line/20 shadow-lg group ${className}`}
+      className={`relative rounded-[24px] overflow-hidden border border-line/20 shadow-lg group ${active ? "is-active" : ""} ${className}`}
+      onClick={toggleActive}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleActive();
+        }
+      }}
+      role="button"
+      tabIndex={0}
     >
       <img
-        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        className="w-full h-full object-cover transition-transform duration-500 max-lg:group-[.is-active]:scale-105 lg:group-hover:scale-105"
         src={src}
         alt={alt}
       />
-      <div className="absolute inset-0 z-[1] bg-black/15 group-hover:bg-black/35 transition-colors duration-300 pointer-events-none" />
-      <CollageSoumissionButton alwaysVisible centered className={buttonClassName} />
+      <div className="absolute inset-0 z-[1] bg-black/15 max-lg:group-[.is-active]:bg-black/35 lg:group-hover:bg-black/35 transition-colors duration-300 pointer-events-none" />
+      <CollageSoumissionButton mode="tapOnMobile" centered className={buttonClassName} />
       {children}
     </div>
   );
@@ -152,6 +200,129 @@ function CollageMediaCard({
 
 const PILLAR_BACKGROUNDS = [pillarAccueilVip, pillarLogement, pillarTranquillite];
 const PILLAR_ROTATE_MS = 5000;
+
+const SERVICE_CTA_REVEAL_CLASS =
+  "transition-all duration-300 max-lg:opacity-0 max-lg:translate-y-2 max-lg:pointer-events-none max-lg:group-[.is-active]:opacity-100 max-lg:group-[.is-active]:translate-y-0 max-lg:group-[.is-active]:pointer-events-auto lg:opacity-0 lg:translate-y-2 lg:group-hover:opacity-100 lg:group-hover:translate-y-0";
+
+const PILLAR_ITEM_BUTTON_REVEAL_CLASS =
+  "transition-all duration-300 max-lg:opacity-0 max-lg:translate-y-2 max-lg:pointer-events-none max-lg:group-[.is-active]/item:opacity-100 max-lg:group-[.is-active]/item:translate-y-0 max-lg:group-[.is-active]/item:pointer-events-auto";
+
+function PillarCardItem({
+  item,
+  requestQuoteLabel,
+}: {
+  item: { icon: string; label: string; pitch: string };
+  requestQuoteLabel: string;
+}) {
+  const [active, setActive] = useState(false);
+  const toggleActive = () => setActive((value) => !value);
+
+  return (
+    <div
+      className={`group/item relative p-3 rounded-xl hover:bg-soft-card max-lg:bg-soft-card/50 max-lg:group-[.is-active]/item:bg-soft-card transition-colors cursor-pointer ${active ? "is-active" : ""}`}
+      onClick={toggleActive}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleActive();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+    >
+      <div className="flex items-center gap-4">
+        <span className="material-symbols-outlined text-brand-primary shrink-0">{item.icon}</span>
+        <span className="font-medium text-sm sm:text-base">{item.label}</span>
+      </div>
+      <div className="grid grid-rows-[0fr] group-hover/item:grid-rows-[1fr] group-[.is-active]/item:grid-rows-[1fr] max-lg:grid-rows-[1fr] transition-all duration-300 ease-out">
+        <div className="overflow-hidden">
+          <p className="text-[13px] text-muted leading-relaxed pt-3 pl-0 sm:pl-10 pr-1">{item.pitch}</p>
+          <div className="pl-0 sm:pl-10 pt-3 pb-1">
+            <Link
+              to="/soumission"
+              onClick={(e) => e.stopPropagation()}
+              className={`inline-flex items-center gap-1.5 bg-brand-primary text-white rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-wider hover:bg-brand-primary/90 shadow-sm ${PILLAR_ITEM_BUTTON_REVEAL_CLASS}`}
+            >
+              {requestQuoteLabel}
+              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ServiceCard({
+  card,
+  src,
+  slug,
+  learnMoreLabel,
+  requestQuoteLabel,
+  delay,
+}: {
+  card: { id: string; title: string; desc: string };
+  src: string;
+  slug: string | null;
+  learnMoreLabel: string;
+  requestQuoteLabel: string;
+  delay: number;
+}) {
+  const [active, setActive] = useState(false);
+  const toggleActive = () => setActive((value) => !value);
+
+  const ctaClassName = `inline-flex items-center gap-1.5 mt-5 bg-brand-primary text-white rounded-full px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wider hover:bg-brand-primary/90 shadow-md ${SERVICE_CTA_REVEAL_CLASS}`;
+
+  return (
+    <ScrollReveal delay={delay}>
+      <div
+        id={card.id}
+        className={`relative min-h-[320px] h-auto sm:h-[360px] lg:h-[400px] rounded-2xl sm:rounded-[32px] p-6 sm:p-8 flex flex-col justify-end group overflow-hidden border border-line/20 scroll-mt-28 ${active ? "is-active" : ""}`}
+        onClick={toggleActive}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggleActive();
+          }
+        }}
+        role="button"
+        tabIndex={0}
+      >
+        <img
+          alt={card.title}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 max-lg:group-[.is-active]:scale-110 lg:group-hover:scale-110"
+          src={src}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+        <div className="absolute inset-0 z-[1] max-lg:group-[.is-active]:bg-black/20 lg:group-hover:bg-black/20 transition-colors duration-300 pointer-events-none" />
+        <div className="relative z-10">
+          <h4 className="text-xl sm:text-2xl font-bold mb-2 text-white">{card.title}</h4>
+          <p className="text-sm sm:text-base text-white/90">{card.desc}</p>
+          {slug ? (
+            <Link
+              to="/services/$slug"
+              params={{ slug }}
+              onClick={(e) => e.stopPropagation()}
+              className={ctaClassName}
+            >
+              {learnMoreLabel}
+              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+            </Link>
+          ) : (
+            <Link
+              to="/soumission"
+              onClick={(e) => e.stopPropagation()}
+              className={ctaClassName}
+            >
+              {requestQuoteLabel}
+              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+            </Link>
+          )}
+        </div>
+      </div>
+    </ScrollReveal>
+  );
+}
 
 function Index() {
   const { locale, t } = useI18n();
@@ -204,7 +375,7 @@ function Index() {
             <HeroCrossfadeVideos />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none" />
             <div className="absolute inset-0 z-[1] bg-black/0 group-hover:bg-black/30 transition-colors duration-300 pointer-events-none" />
-            <CollageSoumissionButton showOnMobile />
+            <CollageSoumissionButton mode="alwaysOnMobile" centered />
           </ScrollReveal>
         </section>
 
@@ -416,36 +587,14 @@ function Index() {
                 className="absolute inset-0 w-full h-full object-cover animate-in fade-in duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/40 via-black/30 to-brand-secondary/40" />
-              <div className="relative w-full max-w-md bg-white rounded-2xl shadow-xl border border-line/20 p-4 sm:p-6 max-h-[calc(100%-1rem)] overflow-y-auto">
+              <div className="relative w-full max-w-md bg-white rounded-2xl shadow-xl border border-line/20 p-4 sm:p-6 max-h-[calc(100%-1rem)] overflow-y-auto scrollbar-none">
                 <div className="flex items-center justify-between mb-4 sm:mb-8">
                   <span className="font-bold text-sm">{current.cardTitle}</span>
                   <span className="material-symbols-outlined text-muted">more_horiz</span>
                 </div>
                 <div key={activePillar} className="space-y-2 animate-in fade-in duration-300">
                   {current.items.map((item) => (
-                    <div
-                      key={item.label}
-                      className="group/item relative p-3 rounded-xl hover:bg-soft-card max-lg:bg-soft-card/50 transition-colors"
-                    >
-                      <div className="flex items-center gap-4">
-                        <span className="material-symbols-outlined text-brand-primary shrink-0">{item.icon}</span>
-                        <span className="font-medium text-sm sm:text-base">{item.label}</span>
-                      </div>
-                      <div className="grid grid-rows-[0fr] group-hover/item:grid-rows-[1fr] max-lg:grid-rows-[1fr] transition-all duration-300 ease-out">
-                        <div className="overflow-hidden">
-                          <p className="text-[13px] text-muted leading-relaxed pt-3 pl-0 sm:pl-10 pr-1">{item.pitch}</p>
-                          <div className="pl-0 sm:pl-10 pt-3 pb-1">
-                            <Link
-                              to="/soumission"
-                              className="inline-flex items-center gap-1.5 bg-brand-primary text-white rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-wider hover:bg-brand-primary/90 transition-colors shadow-sm"
-                            >
-                              {t.premium.requestQuote}
-                              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <PillarCardItem key={item.label} item={item} requestQuoteLabel={t.premium.requestQuote} />
                   ))}
                 </div>
               </div>
@@ -491,38 +640,17 @@ function Index() {
               [IMG.s2, t.services.cards[1]],
               [IMG.s3, t.services.cards[2]],
               [IMG.s4, t.services.cards[3]],
-            ].map(([src, card], i) => {
-              const slug = serviceSlug(card.id);
-              return (
-              <ScrollReveal key={card.id} delay={i * 100}>
-                <div id={card.id} className="relative min-h-[320px] h-auto sm:h-[360px] lg:h-[400px] rounded-2xl sm:rounded-[32px] p-6 sm:p-8 flex flex-col justify-end group overflow-hidden border border-line/20 scroll-mt-28">
-                  <img alt={card.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src={src as string} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                  <div className="relative z-10">
-                    <h4 className="text-xl sm:text-2xl font-bold mb-2 text-white">{card.title}</h4>
-                    <p className="text-sm sm:text-base text-white/90">{card.desc}</p>
-                    {slug ? (
-                      <Link
-                        to="/services/$slug"
-                        params={{ slug }}
-                        className="inline-flex items-center gap-1.5 mt-5 bg-brand-primary text-white rounded-full px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wider hover:bg-brand-primary/90 shadow-md opacity-100 translate-y-0 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300"
-                      >
-                        {serviceUi.learnMore}
-                        <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                      </Link>
-                    ) : (
-                      <Link
-                        to="/soumission"
-                        className="inline-flex items-center gap-1.5 mt-5 bg-brand-primary text-white rounded-full px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wider hover:bg-brand-primary/90 shadow-md opacity-100 translate-y-0 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300"
-                      >
-                        {t.premium.requestQuote}
-                        <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              </ScrollReveal>
-            );})}
+            ].map(([src, card], i) => (
+              <ServiceCard
+                key={card.id}
+                card={card}
+                src={src as string}
+                slug={serviceSlug(card.id)}
+                learnMoreLabel={serviceUi.learnMore}
+                requestQuoteLabel={t.premium.requestQuote}
+                delay={i * 100}
+              />
+            ))}
           </div>
         </section>
 
@@ -545,11 +673,15 @@ function Index() {
                 </a>
               </p>
             </ScrollReveal>
-            <ScrollReveal className="relative h-[280px] sm:h-[380px] lg:h-[500px] rounded-2xl sm:rounded-[32px] lg:rounded-[40px] overflow-hidden shadow-2xl border border-line/20 group" variant="fade-left" delay={150}>
-              <img alt="IR Conciergerie — installation réussie" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src={aboutIrConciergerie} />
-              <div className="absolute inset-0 bg-brand-primary/10 mix-blend-multiply pointer-events-none" />
-              <div className="absolute inset-0 z-[1] bg-black/0 group-hover:bg-black/30 transition-colors duration-300 pointer-events-none" />
-              <CollageSoumissionButton showOnMobile />
+            <ScrollReveal className="h-[280px] sm:h-[380px] lg:h-[500px] rounded-2xl sm:rounded-[32px] lg:rounded-[40px] shadow-2xl border border-line/20" variant="fade-left" delay={150}>
+              <TapRevealMediaShell className="h-full w-full rounded-2xl sm:rounded-[32px] lg:rounded-[40px]">
+                <img
+                  alt="IR Conciergerie — installation réussie"
+                  className="h-full w-full object-cover transition-transform duration-500 max-lg:group-[.is-active]:scale-105 lg:group-hover:scale-105"
+                  src={aboutIrConciergerie}
+                />
+                <div className="absolute inset-0 bg-brand-primary/10 mix-blend-multiply pointer-events-none" />
+              </TapRevealMediaShell>
             </ScrollReveal>
           </div>
         </section>
