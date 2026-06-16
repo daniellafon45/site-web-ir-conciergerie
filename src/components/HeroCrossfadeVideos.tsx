@@ -48,7 +48,7 @@ export function HeroCrossfadeVideos() {
   }, [activeIndex]);
 
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full overflow-hidden transition-transform duration-500 group-hover:scale-105">
       {VIDEOS.map((src, index) => (
         <video
           key={src}

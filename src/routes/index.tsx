@@ -200,9 +200,11 @@ function Index() {
           <ScrollReveal as="h1" className="text-balance max-w-5xl mb-8 sm:mb-12 md:mb-16 tracking-tighter text-[1.75rem] leading-[1.1] sm:text-4xl md:text-[64px] lg:text-[82px] md:leading-[1.05] font-bold px-1">
             {t.hero.title}
           </ScrollReveal>
-          <ScrollReveal className="w-full max-w-[1492px] overflow-hidden shadow-2xl relative rounded-2xl sm:rounded-[32px] md:rounded-[40px] h-[220px] sm:h-[360px] md:h-[600px] lg:h-[800px]" delay={120} duration={900}>
+          <ScrollReveal className="group w-full max-w-[1492px] overflow-hidden shadow-2xl relative rounded-2xl sm:rounded-[32px] md:rounded-[40px] h-[220px] sm:h-[360px] md:h-[600px] lg:h-[800px]" delay={120} duration={900}>
             <HeroCrossfadeVideos />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 z-[1] bg-black/0 group-hover:bg-black/30 transition-colors duration-300 pointer-events-none" />
+            <CollageSoumissionButton showOnMobile />
           </ScrollReveal>
         </section>
 

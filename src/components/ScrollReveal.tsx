@@ -19,73 +19,95 @@ type ScrollRevealProps = {
   style?: CSSProperties;
 } & Omit<HTMLAttributes<HTMLElement>, "style">;
 
+function isInRevealZone(el: HTMLElement) {
+  const rect = el.getBoundingClientRect();
+  const vh = window.innerHeight;
+  return rect.top < vh * 0.92 && rect.bottom > vh * 0.04;
+}
+
 export function ScrollReveal({
   children,
   className,
   variant = "fade-up",
   delay = 0,
   duration = 700,
-  threshold = 0.12,
+  threshold = 0.05,
   once = true,
   as: Tag = "div",
   style,
   ...rest
 }: ScrollRevealProps) {
   const ref = useRef<HTMLElement>(null);
-  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
+  const revealedRef = useRef(false);
 
   useLayoutEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useLayoutEffect(() => {
-    if (!mounted) return;
-
     const el = ref.current;
     if (!el) return;
 
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
+      revealedRef.current = true;
       setVisible(true);
       return;
     }
 
-    const revealIfInView = () => {
-      const rect = el.getBoundingClientRect();
-      return rect.top < window.innerHeight * 0.96 && rect.bottom > 0;
+    const reveal = () => {
+      if (revealedRef.current) return;
+      revealedRef.current = true;
+      // Double rAF: laisse le navigateur peindre l'état initial (opacity 0) avant la transition.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setVisible(true));
+      });
     };
 
-    if (revealIfInView()) {
-      setVisible(true);
+    if (isInRevealZone(el)) {
+      reveal();
       return;
     }
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          if (once) observer.disconnect();
-        } else if (!once) {
-          setVisible(false);
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            reveal();
+            if (once) observer.disconnect();
+          } else if (!once) {
+            revealedRef.current = false;
+            setVisible(false);
+          }
         }
       },
-      { threshold, rootMargin: "0px 0px -4% 0px" },
+      { threshold: [0, threshold, Math.min(threshold + 0.1, 1)], rootMargin: "0px 0px 8% 0px" },
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
-  }, [mounted, once, threshold]);
 
-  const animate = mounted;
+    const onScroll = () => {
+      if (isInRevealZone(el)) {
+        reveal();
+        if (once) {
+          observer.disconnect();
+          window.removeEventListener("scroll", onScroll, true);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true, capture: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll, true);
+    };
+  }, [once, threshold]);
 
   return (
     <Tag
       ref={ref}
       {...rest}
       className={cn(
-        animate && "scroll-reveal",
-        animate && `scroll-reveal--${variant}`,
+        "scroll-reveal",
+        `scroll-reveal--${variant}`,
         visible && "scroll-reveal--visible",
         className,
       )}
