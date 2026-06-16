@@ -54,6 +54,28 @@ export type ServiceOption = {
   desc: string;
 };
 
+export type HomeFaqItem = {
+  question: string;
+  answer: string;
+};
+
+export type PrivacyPolicySection = {
+  title: string;
+  paragraphs: string[];
+  list?: string[];
+};
+
+export type PrivacyPolicy = {
+  pageTitle: string;
+  metaDescription: string;
+  intro?: string;
+  lastUpdatedLabel: string;
+  lastUpdatedDate: string;
+  dateModifiedIso?: string;
+  legalNotice?: string;
+  sections: PrivacyPolicySection[];
+};
+
 export type Messages = {
   meta: {
     siteName: string;
@@ -79,6 +101,8 @@ export type Messages = {
     subtitle: string;
     requestQuote: string;
     arrival: string;
+    arrivalSign: string;
+    arrivalImageAlt: string;
     assistance: string;
     supportTitle: string;
     support247: string;
@@ -107,11 +131,26 @@ export type Messages = {
     name: string;
     role: string;
   };
+  homeFaq: {
+    title: string;
+    subtitle: string;
+    guideLink: string;
+    items: HomeFaqItem[];
+  };
   cta: {
     title: string;
     body: string;
     button: string;
   };
+  privacy: {
+    bannerTitle: string;
+    bannerBody: string;
+    acknowledge: string;
+    learnMore: string;
+    ariaLabel: string;
+  };
+  privacyPolicy: PrivacyPolicy;
+  termsOfUse: PrivacyPolicy;
   footer: {
     tagline: string;
     services: string;
@@ -124,6 +163,9 @@ export type Messages = {
       admin: string;
       about: string;
       contact: string;
+      privacy: string;
+      terms: string;
+      blog: string;
     };
     irConciergerie: string;
     irImmigration: string;
@@ -158,6 +200,8 @@ export type Messages = {
     thankYou: string;
     thankYouBody: string;
     backHome: string;
+    consentLabel: string;
+    consentRequired: string;
     errors: {
       validation: string;
       smtpConfig: string;

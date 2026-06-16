@@ -20,10 +20,13 @@
     "dev": "vite dev",
     "build": "vite build",
     "build:dev": "vite build --mode development",
-    "preview": "vite preview",
-    "deploy": "npm run build && wrangler deploy",
+    "preview": "npm run build && wrangler pages dev dist",
+    "deploy": "npm run build && wrangler pages deploy dist",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "generate:arrival-images": "node scripts/generate-arrival-airport-images.mjs",
+    "generate:blog-images": "node scripts/generate-blog-images.mjs",
+    "download:blog-images": "node scripts/download-blog-images.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -96,6 +99,7 @@
     "globals": "^15.15.0",
     "nitro": "3.0.260603-beta",
     "prettier": "^3.7.3",
+    "sharp": "^0.35.1",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^7.3.1",

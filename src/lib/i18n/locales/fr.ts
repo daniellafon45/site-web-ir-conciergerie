@@ -1,13 +1,23 @@
 import type { Messages } from "../types";
+import {
+  FOOTER_PRIVACY,
+  FOOTER_TERMS,
+  PRIVACY_BANNERS,
+  PRIVACY_CONSENT,
+} from "../privacy-i18n";
+import { FOOTER_BLOG } from "../../blog/blog-i18n";
+import { HOME_FAQ_FR } from "../home-faq-i18n";
+import { privacyPolicyFr } from "../privacy-policy-fr";
+import { termsOfUseFr } from "../terms-of-use-fr";
 
 export const fr: Messages = {
   meta: {
     siteName: "IR Conciergerie",
     homeTitle: "IR Conciergerie — Aide à l'installation au Canada | Montréal, Toronto, Vancouver",
     homeDescription:
-      "Aide à l'installation au Canada : recherche de logement, inspection, transfert aéroport et démarches pour nouveaux arrivants. Montréal, Toronto et Vancouver.",
+      "Trouver un logement à Montréal depuis l'étranger : recherche, inspection, transfert aéroport et accompagnement pour familles et étudiants internationaux. Montréal, Toronto, Vancouver.",
     homeKeywords:
-      "recherche logement Canada, nouveaux arrivants Canada, installation Canada, marché locatif Canada, transfert aéroport Montréal, aide relocalisation, conciergerie immigration, IR Conciergerie",
+      "trouver logement Montréal étranger, recherche logement Canada, nouveaux arrivants Canada, installation Canada, marché locatif Montréal, transfert aéroport Montréal, aide relocalisation, conciergerie immigration, IR Conciergerie",
     soumissionTitle: "Demander une soumission — IR Conciergerie",
     soumissionDescription:
       "Obtenez une soumission personnalisée pour votre installation au Canada : recherche de logement, arrivée et accompagnement logistique.",
@@ -20,14 +30,16 @@ export const fr: Messages = {
     ctaShort: "Soumission",
   },
   hero: {
-    title: "Trouver un logement et s'installer au Canada, sans tout faire seul.",
+    title: "Trouver un logement et s'installer au Canada, sans tout faire seul",
   },
-  trust: ["Entreprises Locales", "Expatriés", "Étudiants Internationaux", "Familles", "Professionnels"],
+  trust: ["Entreprises", "Expatriés", "Étudiants Internationaux", "Familles", "Professionnels"],
   premium: {
     title: "Une aide concrète pour vous installer",
     subtitle: "Des services utiles et accessibles, à partir de 80$ CAD + taxes",
     requestQuote: "Demander une soumission",
     arrival: "Arrivée",
+    arrivalSign: "Arrivées",
+    arrivalImageAlt: "Panneau Arrivées à l'aéroport",
     assistance: "Assistance",
     supportTitle: "Support Client",
     support247: "24/7 Disponible",
@@ -79,16 +91,16 @@ export const fr: Messages = {
   services: {
     sectionTitle: "Nos services pour vous installer.",
     cards: [
-      { id: "service-transfert-aeroport", title: "Transfert Aéroport", desc: "Un accueil à l'aéroport et un trajet direct vers votre logement ou hébergement." },
-      { id: "service-recherche-logement", title: "Recherche de Logement", desc: "On cherche pour vous dans un marché tendu, selon votre budget et vos critères." },
+      { id: "service-transfert-aeroport", title: "Transfert aéroport", desc: "Un accueil à l'aéroport et un trajet direct vers votre logement ou hébergement." },
+      { id: "service-recherche-logement", title: "Recherche de logement", desc: "On cherche pour vous dans un marché tendu, selon votre budget et vos critères." },
       { id: "service-inspection", title: "Inspection détaillée de votre logement", desc: "On vérifie l'état du logement avant signature, pour éviter les mauvaises surprises." },
-      { id: "service-installation", title: "Installation Complète", desc: "Abonnements, services essentiels et ameublement prêts avant votre arrivée." },
+      { id: "service-installation", title: "Installation complète", desc: "Abonnements, services essentiels et ameublement prêts avant votre arrivée." },
     ],
   },
   about: {
     label: "Notre Histoire",
-    title: "Un accompagnement fiable pour votre installation",
-    body: "IR Conciergerie accompagne les nouveaux arrivants au Canada depuis des années. Notre mission : vous aider à trouver un logement, à vous installer et à gérer les démarches du quotidien, avec une équipe qui connaît le terrain et qui écoute vos besoins réels.",
+    title: "Nous avons vécu ces étapes avant vous",
+    body: "À notre arrivée au Canada, nous avons connu les mêmes obstacles : atterrir sans repères, chercher un logement dans un marché tendu, et enchaîner les démarches, banque, électricité, internet, sans savoir par où commencer. Plutôt que de laisser d'autres faire face à ça seuls, nous avons créé IR Conciergerie : un accompagnement pensé par des gens qui sont passés par là, de l'accueil à l'aéroport jusqu'à votre installation.",
     immigration: "Besoin d'assistance pour vos procédures d'immigration ? Contactez notre département d'immigration :",
   },
   testimonial: {
@@ -97,23 +109,30 @@ export const fr: Messages = {
     name: "Jean-François M.",
     role: "Directeur Exécutif, Relocalisé à Montréal",
   },
+  homeFaq: HOME_FAQ_FR,
   cta: {
     title: "Prêt à planifier votre arrivée ?",
     body: "Contactez-nous pour une évaluation personnalisée de vos besoins en installation.",
     button: "Demander une soumission",
   },
+  privacy: PRIVACY_BANNERS.fr,
+  privacyPolicy: privacyPolicyFr,
+  termsOfUse: termsOfUseFr,
   footer: {
     tagline: "Votre partenaire de confiance pour une installation sereine au Canada.",
     services: "Services",
     company: "Entreprise",
     contact: "Contact",
     links: {
-      airport: "Transfert Aéroport",
-      housing: "Recherche Logement",
+      airport: "Transfert aéroport",
+      housing: "Recherche de logement",
       inspection: "Inspection",
       admin: "Démarches",
       about: "À Propos",
       contact: "Contact",
+      privacy: FOOTER_PRIVACY.fr,
+      terms: FOOTER_TERMS.fr,
+      blog: FOOTER_BLOG.fr,
     },
     irConciergerie: "IR Conciergerie",
     irImmigration: "IR Immigration",
@@ -148,6 +167,8 @@ export const fr: Messages = {
     thankYou: "Merci",
     thankYouBody: "Votre demande a bien été transmise à notre équipe. Nous revenons vers vous sous 24 heures à l'adresse",
     backHome: "Retour à l'accueil",
+    consentLabel: PRIVACY_CONSENT.fr.consentLabel,
+    consentRequired: PRIVACY_CONSENT.fr.consentRequired,
     errors: {
       validation: "Vérifiez vos informations (courriel, téléphone, services) et réessayez.",
       smtpConfig: "Impossible d'envoyer votre demande pour le moment. Veuillez nous contacter directement à conciergerie@ir-immigration.com.",

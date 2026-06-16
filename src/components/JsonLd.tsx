@@ -1,12 +1,10 @@
-import { buildLocalBusinessJsonLd, buildWebSiteJsonLd } from "@/lib/seo";
+import { buildRootJsonLdGraph } from "@/lib/seo";
 
 export function JsonLd() {
-  const data = [buildLocalBusinessJsonLd(), buildWebSiteJsonLd()];
-
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(buildRootJsonLdGraph()) }}
     />
   );
 }

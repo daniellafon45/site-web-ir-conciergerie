@@ -49,6 +49,7 @@ function SoumissionPage() {
     firstName: "", lastName: "", email: "", phoneCountry: "CA", phone: "",
     arrival: "", city: "", people: "1", notes: "",
   });
+  const [privacyConsent, setPrivacyConsent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -59,15 +60,20 @@ function SoumissionPage() {
   const canNext =
     (step === 0 && selected.length > 0) ||
     (step === 1 && form.firstName && form.lastName && form.email && form.phone) ||
-    step === 2;
+    (step === 2 && privacyConsent);
 
   const submit = async () => {
+    if (!privacyConsent) {
+      setSubmitError(t.soumission.consentRequired);
+      return;
+    }
     setSubmitting(true);
     setSubmitError(null);
 
     try {
       const result: SoumissionResult = await submitSoumission({
         data: {
+          privacyConsent: true,
           firstName: form.firstName.trim(),
           lastName: form.lastName.trim(),
           email: form.email.trim(),
@@ -277,6 +283,24 @@ function SoumissionPage() {
                     })}
                   </div>
                 </div>
+
+                <label className="mt-8 flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={privacyConsent}
+                    onChange={(e) => {
+                      setPrivacyConsent(e.target.checked);
+                      if (e.target.checked) setSubmitError(null);
+                    }}
+                    className="mt-1 h-4 w-4 shrink-0 rounded border-line/60 text-brand-primary focus:ring-brand-primary"
+                  />
+                  <span className="text-sm text-muted leading-relaxed">
+                    {t.soumission.consentLabel}{" "}
+                    <Link to="/confidentialite" className="text-brand-primary hover:text-brand-primary/80 underline underline-offset-2">
+                      {t.privacy.learnMore}
+                    </Link>
+                  </span>
+                </label>
               </section>
             )}
 
@@ -312,7 +336,7 @@ function SoumissionPage() {
                 <button
                   type="button"
                   onClick={submit}
-                  disabled={submitting}
+                  disabled={submitting || !canNext}
                   className="bg-brand-primary text-white rounded-full hover:bg-brand-primary/90 transition-all flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 text-[12px] font-bold uppercase tracking-wider shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {submitting ? t.soumission.submitting : t.soumission.submit}
@@ -346,6 +370,33 @@ function SoumissionPage() {
           </div>
         )}
       </main>
+
+      <footer className="border-t border-line/40 py-6 px-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-center">
+        <Link
+          to="/services"
+          className="text-sm text-muted hover:text-brand-primary transition-colors underline underline-offset-2"
+        >
+          {t.footer.services}
+        </Link>
+        <Link
+          to="/blog"
+          className="text-sm text-muted hover:text-brand-primary transition-colors underline underline-offset-2"
+        >
+          {t.footer.links.blog}
+        </Link>
+        <Link
+          to="/confidentialite"
+          className="text-sm text-muted hover:text-brand-primary transition-colors underline underline-offset-2"
+        >
+          {t.footer.links.privacy}
+        </Link>
+        <Link
+          to="/conditions-utilisation"
+          className="text-sm text-muted hover:text-brand-primary transition-colors underline underline-offset-2"
+        >
+          {t.footer.links.terms}
+        </Link>
+      </footer>
     </div>
   );
 }

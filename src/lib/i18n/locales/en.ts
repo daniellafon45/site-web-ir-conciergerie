@@ -1,66 +1,78 @@
 import type { Messages } from "../types";
+import {
+  FOOTER_PRIVACY,
+  FOOTER_TERMS,
+  PRIVACY_BANNERS,
+  PRIVACY_CONSENT,
+} from "../privacy-i18n";
+import { FOOTER_BLOG } from "../../blog/blog-i18n";
+import { HOME_FAQ_EN } from "../home-faq-i18n";
+import { privacyPolicyEn } from "../privacy-policy-en";
+import { termsOfUseEn } from "../terms-of-use-en";
 
 export const en: Messages = {
   meta: {
     siteName: "IR Conciergerie",
-    homeTitle: "IR Conciergerie — Premium Relocation Concierge in Canada | Montreal, Toronto, Vancouver",
+    homeTitle: "IR Conciergerie — Settlement Support in Canada | Montreal, Toronto, Vancouver",
     homeDescription:
-      "Premium concierge for your move to Canada: airport transfer, housing search, inspection, setup and admin support. Serving Montreal, Toronto and Vancouver.",
+      "Find housing in Montreal from abroad: search, inspection, airport transfer and support for families and international students. Montreal, Toronto, Vancouver.",
     homeKeywords:
-      "Canada relocation concierge, move to Canada, Canada settlement services, Montreal airport transfer, housing search Canada, IR Conciergerie",
+      "find housing Montreal from abroad, housing search Canada, newcomers Canada, settlement Canada, Montreal rental market, Montreal airport transfer, relocation help, IR Conciergerie",
     soumissionTitle: "Request a Quote — IR Conciergerie",
     soumissionDescription:
-      "Get a personalized quote for your relocation to Canada: VIP welcome, housing and full logistics support.",
+      "Get a personalized quote for your settlement in Canada: housing search, arrival and logistics support.",
   },
   nav: { services: "Services", about: "About", contact: "Contact", cta: "Request a quote", ctaShort: "Quote" },
-  hero: { title: "Turn your arrival and settlement in Canada into a seamless, stress-free experience." },
-  trust: ["Local Businesses", "Expatriates", "International Students", "Families", "Professionals"],
+  hero: { title: "Find housing and settle in Canada without doing it all alone" },
+  trust: ["Businesses", "Expatriates", "International Students", "Families", "Professionals"],
   premium: {
-    title: "Premium Services",
-    subtitle: "from just $80 CAD + tax",
+    title: "Practical help to get you settled",
+    subtitle: "Useful, accessible services from $80 CAD + tax",
     requestQuote: "Request a quote",
     arrival: "Arrival",
+    arrivalSign: "Arrivals",
+    arrivalImageAlt: "Airport Arrivals sign",
     assistance: "Assistance",
     supportTitle: "Client Support",
     support247: "Available 24/7",
-    secureTransport: "Secure Transport",
-    guaranteedInspection: "Guaranteed Inspection",
+    secureTransport: "Reliable transfer",
+    guaranteedInspection: "Home verified before signing",
     testimonialName: "Marie L.",
-    testimonialText: "A flawless setup!",
+    testimonialText: "We found our home without stress.",
   },
   manifesto:
-    "Delegate the logistics of your arrival, integration and move across Canada. IR Conciergerie orchestrates every step of your settlement with precision and care.",
+    "Finding housing, signing a lease remotely and handling every step of settling in Canada is complex when you arrive from abroad. IR Conciergerie supports you concretely, step by step.",
   pillars: {
-    sectionTitle: "Excellence at the service\nof your settlement.",
+    sectionTitle: "The hard steps,\nwe handle them.",
     pillars: [
       {
-        title: "VIP Welcome",
-        desc: "A private driver meets you at the airport for a comfortable transfer to your new home or temporary accommodation.",
-        cardTitle: "Arrival Itinerary",
+        title: "Arrival without guesswork",
+        desc: "Landing in an unknown city without an address or bearings is stressful. We welcome you at the airport and drive you straight to your home or temporary accommodation.",
+        cardTitle: "Your arrival",
         items: [
-          { icon: "flight_land", label: "Airport_Welcome", pitch: "A dedicated agent greets you as soon as you land." },
-          { icon: "directions_car", label: "Private_Transfer", pitch: "Premium sedan and professional driver at your service." },
-          { icon: "luggage", label: "Baggage_Handling", pitch: "Your luggage handled, transported and delivered effortlessly." },
+          { icon: "flight_land", label: "Airport_Welcome", pitch: "Someone meets you at the gate to guide you as soon as you land." },
+          { icon: "directions_car", label: "Direct_Transfer", pitch: "From the airport to your address, without complicated navigation." },
+          { icon: "luggage", label: "Baggage_Handling", pitch: "Your bags handled for a simpler first day." },
           { icon: "key", label: "Key_Handover", pitch: "Access to your home arranged and ready on arrival." },
         ],
       },
       {
-        title: "Turnkey Housing",
-        desc: "We find the ideal property for your needs and manage thorough inspections before you move in.",
+        title: "Find housing without losing weeks",
+        desc: "The market is tight, viewings are rare and signing remotely is risky. We search for you, visit and verify before you move in.",
         cardTitle: "Housing File",
         items: [
-          { icon: "home_work", label: "Housing_Search", pitch: "Custom property selection based on your criteria." },
-          { icon: "fact_check", label: "Inspection_Report", pitch: "Detailed inspection and full report before signing." },
-          { icon: "description", label: "Lease_Signing", pitch: "Lease negotiation and signing handled for you." },
+          { icon: "home_work", label: "Active_Search", pitch: "We filter listings by your budget, neighbourhood and arrival date." },
+          { icon: "fact_check", label: "Verified_Visit", pitch: "We spot issues before you sign the lease." },
+          { icon: "description", label: "Lease_Signing", pitch: "Negotiation and lease signing handled for you." },
           { icon: "chair", label: "Furnishing", pitch: "Furnished and equipped home ready when you arrive." },
         ],
       },
       {
-        title: "Peace of Mind",
-        desc: "From bank accounts to utility subscriptions, we simplify all your local administrative steps.",
+        title: "Your everyday procedures, simplified",
+        desc: "Bank, electricity, internet, insurance: these steps often block newcomers. We guide you so everything is in place quickly.",
         cardTitle: "Administrative Steps",
         items: [
-          { icon: "account_balance", label: "Bank_Account", pitch: "Account opening facilitated through our banking partners." },
+          { icon: "account_balance", label: "Bank_Account", pitch: "Easier account opening through our banking partners." },
           { icon: "bolt", label: "Utilities", pitch: "Electricity, gas and water activated before move-in." },
           { icon: "wifi", label: "Internet_Phone", pitch: "Internet and mobile plans subscribed and installed." },
           { icon: "health_and_safety", label: "Health_Insurance", pitch: "Appropriate health coverage set up quickly." },
@@ -69,18 +81,18 @@ export const en: Messages = {
     ],
   },
   services: {
-    sectionTitle: "Our Premium Services.",
+    sectionTitle: "Our services to help you settle.",
     cards: [
-      { id: "service-transfert-aeroport", title: "Airport Transfer", desc: "Personalized welcome and private transport from arrival." },
-      { id: "service-recherche-logement", title: "Housing Search", desc: "Properties matched to your lifestyle and budget." },
-      { id: "service-inspection", title: "Detailed Home Inspection", desc: "Rigorous condition check for your safety before you arrive." },
-      { id: "service-installation", title: "Full Setup", desc: "Subscriptions and furnishing handled before your arrival." },
+      { id: "service-transfert-aeroport", title: "Airport transfer", desc: "Airport welcome and a direct ride to your home or temporary accommodation." },
+      { id: "service-recherche-logement", title: "Housing search", desc: "We search for you in a tight market, based on your budget and criteria." },
+      { id: "service-inspection", title: "Detailed home inspection", desc: "We check the condition of the home before signing, to avoid bad surprises." },
+      { id: "service-installation", title: "Full setup", desc: "Subscriptions, essentials and furnishing ready before you arrive." },
     ],
   },
   about: {
     label: "Our Story",
-    title: "Excellence at the Service of Your Settlement",
-    body: "IR Conciergerie redefines welcome in Canada. Our mission is to give every newcomer a smooth, secure and premium transition. We combine logistics expertise with personalized care for total success.",
+    title: "We've been through these steps before you",
+    body: "When we arrived in Canada, we faced the same obstacles: landing without bearings, searching for housing in a tight market, and going through step after step — bank, electricity, internet — without knowing where to start. Rather than let others face that alone, we created IR Conciergerie: support built by people who've been there, from airport welcome through to your full settlement.",
     immigration: "Need help with immigration procedures? Contact our immigration department:",
   },
   testimonial: {
@@ -89,17 +101,31 @@ export const en: Messages = {
     name: "Jean-François M.",
     role: "Executive Director, Relocated to Montreal",
   },
+  homeFaq: HOME_FAQ_EN,
   cta: {
     title: "Ready to plan your arrival?",
     body: "Contact us for a personalized assessment of your relocation needs.",
     button: "Request a quote",
   },
+  privacy: PRIVACY_BANNERS.en,
+  privacyPolicy: privacyPolicyEn,
+  termsOfUse: termsOfUseEn,
   footer: {
     tagline: "Your trusted partner for a serene relocation to Canada.",
     services: "Services",
     company: "Company",
     contact: "Contact",
-    links: { airport: "Airport Transfer", housing: "Housing Search", inspection: "Inspection", admin: "Admin", about: "About", contact: "Contact" },
+    links: {
+      airport: "Airport transfer",
+      housing: "Housing search",
+      inspection: "Inspection",
+      admin: "Procedures",
+      about: "About",
+      contact: "Contact",
+      privacy: FOOTER_PRIVACY.en,
+      terms: FOOTER_TERMS.en,
+      blog: FOOTER_BLOG.en,
+    },
     irConciergerie: "IR Conciergerie",
     irImmigration: "IR Immigration",
     irRecruitment: "IR Recruitment",
@@ -133,6 +159,8 @@ export const en: Messages = {
     thankYou: "Thank you",
     thankYouBody: "Your request has been sent to our team. We will get back to you within 24 hours at",
     backHome: "Back to home",
+    consentLabel: PRIVACY_CONSENT.en.consentLabel,
+    consentRequired: PRIVACY_CONSENT.en.consentRequired,
     errors: {
       validation: "Please check your details (email, phone, services) and try again.",
       smtpConfig: "Unable to send your request right now. Please contact us at conciergerie@ir-immigration.com.",

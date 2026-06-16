@@ -3,17 +3,42 @@ import { useEffect } from "react";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { SITE_URL } from "@/lib/seo";
 
+type CanonicalPath =
+  | "/"
+  | "/soumission"
+  | "/confidentialite"
+  | "/conditions-utilisation"
+  | "/blog"
+  | `/blog/${string}`
+  | "/services"
+  | `/services/${string}`;
+
 type SeoHeadProps = {
   page?: "home" | "soumission";
+  title?: string;
+  description?: string;
+  canonicalPath?: CanonicalPath;
+  ogType?: "website" | "article";
+  ogImage?: string;
 };
 
-export function SeoHead({ page = "home" }: SeoHeadProps) {
+export function SeoHead({
+  page = "home",
+  title: titleOverride,
+  description: descriptionOverride,
+  canonicalPath,
+  ogType = "website",
+  ogImage,
+}: SeoHeadProps) {
   const { t, locale } = useI18n();
 
   useEffect(() => {
-    const title = page === "soumission" ? t.meta.soumissionTitle : t.meta.homeTitle;
-    const description = page === "soumission" ? t.meta.soumissionDescription : t.meta.homeDescription;
-    const path = page === "soumission" ? "/soumission" : "/";
+    const title = titleOverride ?? (page === "soumission" ? t.meta.soumissionTitle : t.meta.homeTitle);
+    const description =
+      descriptionOverride ?? (page === "soumission" ? t.meta.soumissionDescription : t.meta.homeDescription);
+    const path =
+      canonicalPath ??
+      (page === "soumission" ? "/soumission" : titleOverride ? "/confidentialite" : "/");
     const canonical = `${SITE_URL}${path}${locale !== "fr" ? `?lang=${locale}` : ""}`;
 
     document.title = title;
@@ -30,13 +55,20 @@ export function SeoHead({ page = "home" }: SeoHeadProps) {
     };
 
     setMeta("description", description);
-    setMeta("keywords", t.meta.homeKeywords);
+    if (!titleOverride) {
+      setMeta("keywords", t.meta.homeKeywords);
+    }
     setMeta("og:title", title, true);
     setMeta("og:description", description, true);
-    setMeta("og:type", "website", true);
+    setMeta("og:type", ogType, true);
     setMeta("og:url", canonical, true);
     setMeta("og:locale", locale === "fr" ? "fr_CA" : locale === "en" ? "en_CA" : locale, true);
-    setMeta("twitter:card", "summary_large_image");
+    if (ogImage) {
+      const imgUrl = ogImage.startsWith("http") ? ogImage : `${SITE_URL}${ogImage}`;
+      setMeta("og:image", imgUrl, true);
+      setMeta("twitter:image", imgUrl);
+    }
+    setMeta("twitter:card", ogImage ? "summary_large_image" : "summary");
     setMeta("twitter:title", title);
     setMeta("twitter:description", description);
 
@@ -47,7 +79,7 @@ export function SeoHead({ page = "home" }: SeoHeadProps) {
       document.head.appendChild(link);
     }
     link.href = canonical;
-  }, [t, locale, page]);
+  }, [t, locale, page, titleOverride, descriptionOverride, canonicalPath, ogType, ogImage]);
 
   return null;
 }

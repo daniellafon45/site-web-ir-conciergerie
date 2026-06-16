@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
@@ -9,15 +9,17 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { AppProviders } from "../components/AppProviders";
 import { JsonLd } from "../components/JsonLd";
-import { I18nProvider, useI18n } from "../lib/i18n/I18nProvider";
+import { PrivacyNoticeBanner } from "../components/PrivacyNoticeBanner";
+import { useI18n } from "../lib/i18n/I18nProvider";
 import { SITE_URL } from "../lib/seo";
 import appCss from "../styles.css?url";
 import favicon from "../assets/favicon.png?url";
 import logoIrConciergerie from "../assets/logo-ir-conciergerie.png?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
-function NotFoundComponent() {
+function NotFoundContent() {
   const { t } = useI18n();
   return (
     <div className="flex min-h-screen items-center justify-center bg-white px-4">
@@ -38,7 +40,15 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function NotFoundComponent() {
+  return (
+    <AppProviders>
+      <NotFoundContent />
+    </AppProviders>
+  );
+}
+
+function ErrorContent({ error, reset }: { error: Error; reset: () => void }) {
   const { t } = useI18n();
   console.error(error);
   const router = useRouter();
@@ -70,6 +80,14 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+  return (
+    <AppProviders>
+      <ErrorContent error={error} reset={reset} />
+    </AppProviders>
   );
 }
 
@@ -174,14 +192,11 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <I18nProvider>
-        <JsonLd />
-        <Outlet />
-      </I18nProvider>
-    </QueryClientProvider>
+    <AppProviders>
+      <JsonLd />
+      <Outlet />
+      <PrivacyNoticeBanner />
+    </AppProviders>
   );
 }
