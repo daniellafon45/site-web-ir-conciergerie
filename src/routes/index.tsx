@@ -25,12 +25,12 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        title: "IR Conciergerie — Conciergerie relocalisation Canada | Montréal, Toronto, Vancouver",
+        title: "IR Conciergerie — Aide à l'installation au Canada | Montréal, Toronto, Vancouver",
       },
       {
         name: "description",
         content:
-          "Conciergerie premium pour votre arrivée au Canada : transfert aéroport, recherche de logement, inspection, installation. Montréal, Toronto, Vancouver.",
+          "Aide à l'installation au Canada : recherche de logement, inspection, transfert aéroport et démarches pour nouveaux arrivants. Montréal, Toronto, Vancouver.",
       },
       { property: "og:url", content: SITE_URL },
     ],

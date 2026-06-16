@@ -22,7 +22,7 @@ export function buildLocalBusinessJsonLd() {
     image: ORGANIZATION.logo,
     email: ORGANIZATION.email,
     description:
-      "Conciergerie premium pour relocalisation au Canada : transfert aéroport, recherche de logement, inspection, installation et démarches administratives à Montréal, Toronto et Vancouver.",
+      "Aide à l'installation au Canada : recherche de logement, inspection, transfert aéroport et démarches pour nouveaux arrivants à Montréal, Toronto et Vancouver.",
     areaServed: ORGANIZATION.areaServed.map((city) => ({
       "@type": "City",
       name: city,

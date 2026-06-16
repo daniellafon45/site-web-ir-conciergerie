@@ -95,17 +95,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
         title:
-          "IR Conciergerie — Conciergerie relocalisation Canada | Montréal, Toronto, Vancouver",
+          "IR Conciergerie — Aide à l'installation au Canada | Montréal, Toronto, Vancouver",
       },
       {
         name: "description",
         content:
-          "Conciergerie premium pour votre arrivée au Canada : transfert aéroport, recherche de logement, inspection, installation. Montréal, Toronto, Vancouver.",
+          "Aide à l'installation au Canada : recherche de logement, inspection, transfert aéroport et démarches pour nouveaux arrivants. Montréal, Toronto, Vancouver.",
       },
       {
         name: "keywords",
         content:
-          "conciergerie Canada, relocalisation Canada, installation Canada, transfert aéroport Montréal, recherche logement Canada, conciergerie immigration, IR Conciergerie",
+          "recherche logement Canada, nouveaux arrivants Canada, installation Canada, marché locatif Canada, transfert aéroport Montréal, aide relocalisation, conciergerie immigration, IR Conciergerie",
       },
       { name: "author", content: "IR Conciergerie" },
       { name: "robots", content: "index, follow, max-image-preview:large" },
@@ -113,12 +113,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "geo.placename", content: "Montréal" },
       {
         property: "og:title",
-        content: "IR Conciergerie — Votre arrivée au Canada, maîtrisée.",
+        content: "IR Conciergerie — Trouver un logement et s'installer au Canada.",
       },
       {
         property: "og:description",
         content:
-          "Service de conciergerie premium pour votre relocalisation au Canada. Accueil VIP, logement et démarches.",
+          "Aide concrète pour nouveaux arrivants : recherche de logement, inspection, transfert aéroport et démarches d'installation.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: SITE_URL },
@@ -129,7 +129,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: "IR Conciergerie — Relocalisation Canada" },
       {
         name: "twitter:description",
-        content: "Conciergerie premium : transfert aéroport, logement, installation au Canada.",
+        content: "Aide à l'installation au Canada : logement, inspection, transfert aéroport et démarches.",
       },
     ],
     links: [
