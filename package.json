@@ -4,8 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "engines": {
-    "node": ">=22",
-    "npm": ">=10.9.2"
+    "node": ">=22"
   },
   "scripts": {
     "dev": "vite dev",
