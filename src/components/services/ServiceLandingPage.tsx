@@ -110,7 +110,7 @@ export function ServiceLandingPage({ page }: ServiceLandingPageProps) {
           {page.sections.map((section) => (
             <section key={section.heading}>
               <h2 className="text-xl sm:text-2xl font-bold tracking-tight mb-4">{section.heading}</h2>
-              {section.paragraphs.map((p) => (
+              {section.paragraphs?.map((p) => (
                 <p key={p.slice(0, 40)} className="text-muted leading-relaxed mb-4 last:mb-0">
                   <RentalPlatformLinks text={p} locale={page.locale} />
                 </p>

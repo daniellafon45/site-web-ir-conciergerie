@@ -1,4 +1,4 @@
-import type { BlogPost } from "../types";
+import type { BlogPost } from "../../types";
 
 export const compteBancaire: BlogPost = {
   slug: "compte-bancaire-nouveaux-arrivants-canada",

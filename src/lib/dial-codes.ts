@@ -1217,7 +1217,7 @@ export function getDialCodeByCountryId(id: string): string {
 }
 
 export function formatDialCodeLabel(entry: DialCodeOption): string {
-  return `${entry.code} — ${entry.country}`;
+  return `(${entry.code}) ${entry.country}`;
 }
 
 export function filterDialCodes(query: string): DialCodeOption[] {

@@ -9,7 +9,7 @@ export type ServiceFaqItem = {
 
 export type ServiceSection = {
   heading: string;
-  paragraphs: string[];
+  paragraphs?: string[];
   list?: string[];
 };
 

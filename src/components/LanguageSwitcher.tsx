@@ -13,6 +13,7 @@ type LanguageSwitcherProps = {
 
 export function LanguageSwitcher({ compact = false, menu = false, className = "" }: LanguageSwitcherProps) {
   const { locale, setLocale } = useI18n();
+  const label = LOCALE_LABELS[locale];
 
   return (
     <label className={cn(menu ? "flex w-full items-center gap-3" : "inline-flex items-center gap-2 shrink-0", className)}>
@@ -31,24 +32,39 @@ export function LanguageSwitcher({ compact = false, menu = false, className = ""
           menu
             ? "h-12 w-full min-w-0"
             : cn(
-                "max-w-[42vw] sm:max-w-none",
-                compact
-                  ? "h-10 min-w-[5.75rem] max-w-[7.5rem] sm:h-12 sm:min-w-[7.5rem] sm:max-w-[13rem]"
-                  : "h-10 min-w-[7rem] max-w-[9rem] sm:min-w-[9rem] sm:max-w-none",
+                "w-auto max-w-[42vw] sm:max-w-[16rem]",
+                compact ? "h-10 sm:h-12" : "h-10",
               ),
         )}
       >
+        {/* Hidden sizer so the closed select hugs the current label width */}
+        {!menu && (
+          <span
+            aria-hidden
+            className={cn(
+              "invisible pointer-events-none whitespace-nowrap px-3 pr-7",
+              compact
+                ? "text-[9px] font-semibold tracking-wide sm:px-4 sm:pr-8 sm:text-xs"
+                : "text-[10px] font-medium sm:text-sm",
+            )}
+          >
+            {label}
+          </span>
+        )}
         <select
           value={locale}
           onChange={(e) => setLocale(e.target.value as Locale)}
           aria-label="Choisir la langue"
           className={cn(
-            "h-full w-full min-w-0 cursor-pointer appearance-none truncate rounded-full bg-transparent text-text transition focus:outline-none",
+            "cursor-pointer appearance-none truncate rounded-full bg-transparent text-text transition focus:outline-none",
             menu
-              ? "pl-4 pr-9 text-left text-sm font-semibold"
-              : compact
-                ? "pl-3 pr-7 text-left text-[9px] font-semibold tracking-wide sm:pl-4 sm:pr-8 sm:text-xs"
-                : "pl-3 pr-7 text-left text-[10px] font-medium sm:text-sm",
+              ? "h-full w-full min-w-0 pl-4 pr-9 text-left text-sm font-semibold"
+              : cn(
+                  "absolute inset-0 h-full w-full",
+                  compact
+                    ? "pl-3 pr-7 text-left text-[9px] font-semibold tracking-wide sm:pl-4 sm:pr-8 sm:text-xs"
+                    : "pl-3 pr-7 text-left text-[10px] font-medium sm:text-sm",
+                ),
           )}
         >
           {LOCALES.map((code) => (
@@ -61,7 +77,7 @@ export function LanguageSwitcher({ compact = false, menu = false, className = ""
           aria-hidden
           className={cn(
             "pointer-events-none absolute top-1/2 -translate-y-1/2 text-muted",
-            compact ? "right-3 h-3.5 w-3.5 sm:h-4 sm:w-4" : "right-3 h-3.5 w-3.5",
+            compact ? "right-2.5 h-3.5 w-3.5 sm:right-3 sm:h-4 sm:w-4" : "right-2.5 h-3.5 w-3.5",
           )}
         />
       </span>

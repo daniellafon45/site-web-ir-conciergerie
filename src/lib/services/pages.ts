@@ -35,7 +35,7 @@ export function resolveServiceSlugForLocale(slug: string, locale: ServiceLocale)
 export function estimateServiceWordCount(page: ServicePage): number {
   const text = [
     page.lead,
-    ...page.sections.flatMap((s) => [...s.paragraphs, ...(s.list ?? [])]),
+    ...page.sections.flatMap((s) => [...(s.paragraphs ?? []), ...(s.list ?? [])]),
     ...(page.comparisonRows?.flatMap((r) => [r.aspect, r.alone, r.concierge]) ?? []),
     ...page.faq.flatMap((f) => [f.question, f.answer]),
   ].join(" ");

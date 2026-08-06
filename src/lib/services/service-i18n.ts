@@ -15,6 +15,7 @@ export type ServiceUiStrings = {
   comparisonAlone: string;
   comparisonConcierge: string;
   comparisonAspect: string;
+  fromPrice: string;
   learnMore: string;
   allServices: string;
   readInFr: string;

@@ -1,4 +1,4 @@
-import type { ServicePage } from "./types";
+import type { ServicePage } from "../types";
 
 const sharedComparisonRowsFr = [
   {

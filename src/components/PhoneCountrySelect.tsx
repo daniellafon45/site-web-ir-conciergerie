@@ -36,7 +36,7 @@ export function PhoneCountrySelect({ value, onChange, className }: PhoneCountryS
           aria-expanded={open}
           aria-label="Indicatif régional"
           className={cn(
-            "flex w-[min(38vw,9.5rem)] shrink-0 items-center justify-between gap-1.5 rounded-xl border-2 border-line/60 bg-white px-2.5 py-3 text-left text-[13px] transition focus:border-brand-primary focus:outline-none sm:w-[min(100%,220px)] sm:gap-2 sm:px-3 sm:text-[15px]",
+            "flex w-auto max-w-[11.5rem] shrink-0 items-center gap-1.5 rounded-xl border-2 border-line/60 bg-white px-2.5 py-3 text-left text-[13px] transition focus:border-brand-primary focus:outline-none sm:max-w-[12.5rem] sm:gap-1.5 sm:px-3 sm:text-[15px]",
             className,
           )}
         >

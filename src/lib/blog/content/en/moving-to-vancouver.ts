@@ -1,4 +1,4 @@
-import type { BlogPost } from "../types";
+import type { BlogPost } from "../../types";
 
 export const movingToVancouver: BlogPost = {
   slug: "moving-to-vancouver-guide",

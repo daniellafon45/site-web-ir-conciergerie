@@ -142,7 +142,7 @@ export function BlogArticlePage({ post }: BlogArticlePageProps) {
           {post.sections.map((section) => (
             <section key={section.heading}>
               <h2 className="text-xl font-bold mb-4">{section.heading}</h2>
-              {section.paragraphs.map((paragraph) => (
+              {section.paragraphs?.map((paragraph) => (
                 <p key={paragraph.slice(0, 48)} className="text-muted leading-relaxed mb-4">
                   <RentalPlatformLinks text={paragraph} locale={post.locale} />
                 </p>

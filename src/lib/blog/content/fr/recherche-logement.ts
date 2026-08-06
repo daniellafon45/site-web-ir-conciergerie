@@ -1,4 +1,4 @@
-import type { BlogPost } from "../types";
+import type { BlogPost } from "../../types";
 
 export const rechercheLogement: BlogPost = {
   slug: "recherche-logement-nouveaux-arrivants-canada",
