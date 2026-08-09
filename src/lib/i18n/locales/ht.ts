@@ -148,7 +148,7 @@ export const ht: Messages = {
     consentRequired: PRIVACY_CONSENT.ht.consentRequired,
     errors: {
       validation: "Verifye enfòmasyon ou yo epi eseye ankò.",
-      smtpConfig: "Nou pa t kapab voye demann ou an. Kontakte nou nan conciergerie@ir-immigration.com.",
+      smtpConfig: "Nou pa t kapab voye demann ou an. Kontakte nou nan info@ir-conciergerie.com.",
       smtpSendDev: "Erè koneksyon imèl.",
       generic: "Nou pa t kapab voye demann ou an. Eseye ankò oswa kontakte nou.",
       email: "Verifye adrès imèl ou.",

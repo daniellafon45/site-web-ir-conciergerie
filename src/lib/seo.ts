@@ -9,7 +9,7 @@ export const ORGANIZATION = {
   legalName: "IR Conciergerie",
   url: SITE_URL,
   logo: `${SITE_URL}/assets/logo-ir-conciergerie-D0eG8BhH.png`,
-  email: "conciergerie@ir-immigration.com",
+  email: "info@ir-conciergerie.com",
   areaServed: ["Montreal", "Toronto", "Vancouver", "Quebec", "Canada"],
   sameAs: ["https://ir-immigration.com"],
 };

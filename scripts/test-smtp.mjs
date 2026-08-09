@@ -1,6 +1,6 @@
 // Simule d'anciennes variables Vite qui causaient l'erreur 535
 process.env.SMTP_HOST = "smtp.hostinger.com";
-process.env.SMTP_USER = "conciergerie@ir-immigration.com";
+process.env.SMTP_USER = "info@ir-conciergerie.com";
 process.env.SMTP_PASS = "wrong-password";
 process.env.SMTP_PORT = "465";
 process.env.SMTP_SECURE = "true";

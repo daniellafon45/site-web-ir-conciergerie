@@ -18,7 +18,7 @@ export const termsOfUseEn: PrivacyPolicy = {
       title: "2. Publisher identification",
       paragraphs: [
         "Publisher: IR Conciergerie / IR Immigration.",
-        "Contact email: conciergerie@ir-immigration.com.",
+        "Contact email: info@ir-conciergerie.com.",
         "The Site is hosted by Cloudflare.",
       ],
     },
@@ -108,7 +108,7 @@ export const termsOfUseEn: PrivacyPolicy = {
       title: "14. Personal information protection",
       paragraphs: [
         "The collection, use and disclosure of your personal information are described in our privacy policy, available at /confidentialite. That policy forms an integral part of these Terms.",
-        "For privacy questions or to exercise your rights, contact our person responsible for the protection of personal information at conciergerie@ir-immigration.com.",
+        "For privacy questions or to exercise your rights, contact our person responsible for the protection of personal information at info@ir-conciergerie.com.",
       ],
     },
     {
@@ -129,7 +129,7 @@ export const termsOfUseEn: PrivacyPolicy = {
     {
       title: "17. Contact",
       paragraphs: [
-        "For any questions about these Terms, write to conciergerie@ir-immigration.com.",
+        "For any questions about these Terms, write to info@ir-conciergerie.com.",
       ],
     },
   ],

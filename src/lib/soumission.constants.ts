@@ -1,11 +1,5 @@
 /** Destinataire principal des soumissions (site IR Conciergerie). */
-export const SOUMISSION_RECIPIENT = "conciergerie@ir-immigration.com";
-
-/** Copie des soumissions vers IR Immigration. */
-export const SOUMISSION_CC = "direction@ir-immigration.com";
-
-/** @deprecated Utiliser SOUMISSION_RECIPIENT et SOUMISSION_CC. */
-export const SOUMISSION_RECIPIENTS = [SOUMISSION_RECIPIENT, SOUMISSION_CC] as const;
+export const SOUMISSION_RECIPIENT = "info@ir-conciergerie.com";
 
 export const SERVICE_ICONS = {
   transfert: "flight_land",

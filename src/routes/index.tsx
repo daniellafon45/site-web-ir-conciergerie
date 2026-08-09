@@ -663,15 +663,6 @@ function Index() {
               <p className="text-base sm:text-lg text-muted leading-relaxed">
                 {t.about.body}
               </p>
-              <p className="text-lg sm:text-xl md:text-2xl lg:text-[32px] xl:text-[40px] tracking-tight font-bold leading-[1.25] break-words">
-                {t.about.immigration}{" "}
-                <a
-                  href="mailto:direction@ir-immigration.com"
-                  className="text-brand-primary hover:text-brand-primary/80 transition-colors"
-                >
-                  direction@ir-immigration.com
-                </a>
-              </p>
             </ScrollReveal>
             <ScrollReveal className="h-[280px] sm:h-[380px] lg:h-[500px] rounded-2xl sm:rounded-[32px] lg:rounded-[40px] shadow-2xl border border-line/20" variant="fade-left" delay={150}>
               <TapRevealMediaShell className="h-full w-full rounded-2xl sm:rounded-[32px] lg:rounded-[40px]">
@@ -851,24 +842,8 @@ function Index() {
                   <span className="block text-[10px] uppercase tracking-wider font-bold text-white/40 mb-1">
                     {t.footer.irConciergerie}
                   </span>
-                  <a href="mailto:conciergerie@ir-immigration.com" className="hover:text-white transition-colors break-all">
-                    conciergerie@ir-immigration.com
-                  </a>
-                </li>
-                <li>
-                  <span className="block text-[10px] uppercase tracking-wider font-bold text-white/40 mb-1">
-                    {t.footer.irImmigration}
-                  </span>
-                  <a href="mailto:direction@ir-immigration.com" className="hover:text-white transition-colors break-all">
-                    direction@ir-immigration.com
-                  </a>
-                </li>
-                <li>
-                  <span className="block text-[10px] uppercase tracking-wider font-bold text-white/40 mb-1">
-                    {t.footer.irRecruitment}
-                  </span>
-                  <a href="mailto:recrutement@industriellerh.com" className="hover:text-white transition-colors break-all">
-                    recrutement@industriellerh.com
+                  <a href="mailto:info@ir-conciergerie.com" className="hover:text-white transition-colors break-all">
+                    info@ir-conciergerie.com
                   </a>
                 </li>
               </ul>

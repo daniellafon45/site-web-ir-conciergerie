@@ -145,7 +145,7 @@ export const zh: Messages = {
     consentRequired: PRIVACY_CONSENT.zh.consentRequired,
     errors: {
       validation: "请检查您的信息并重试。",
-      smtpConfig: "暂时无法发送。请联系 conciergerie@ir-immigration.com。",
+      smtpConfig: "暂时无法发送。请联系 info@ir-conciergerie.com。",
       smtpSendDev: "邮件连接失败。",
       generic: "暂时无法发送，请重试或直接联系我们。",
       email: "请检查您的电子邮箱。",

@@ -146,7 +146,7 @@ export const ar: Messages = {
     consentRequired: PRIVACY_CONSENT.ar.consentRequired,
     errors: {
       validation: "تحقق من معلوماتك وأعد المحاولة.",
-      smtpConfig: "تعذر الإرسال. تواصل معنا على conciergerie@ir-immigration.com.",
+      smtpConfig: "تعذر الإرسال. تواصل معنا على info@ir-conciergerie.com.",
       smtpSendDev: "فشل اتصال البريد.",
       generic: "تعذر الإرسال. أعد المحاولة أو تواصل معنا.",
       email: "تحقق من بريدك الإلكتروني.",

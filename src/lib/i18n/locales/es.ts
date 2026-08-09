@@ -146,7 +146,7 @@ export const es: Messages = {
     consentRequired: PRIVACY_CONSENT.es.consentRequired,
     errors: {
       validation: "Verifique sus datos y reintente.",
-      smtpConfig: "No pudimos enviar su solicitud. Contáctenos en conciergerie@ir-immigration.com.",
+      smtpConfig: "No pudimos enviar su solicitud. Contáctenos en info@ir-conciergerie.com.",
       smtpSendDev: "Error de conexión email.",
       generic: "No pudimos enviar su solicitud. Intente de nuevo o contáctenos.",
       email: "Verifique su correo electrónico.",

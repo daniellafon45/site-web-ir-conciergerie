@@ -171,7 +171,7 @@ export const fr: Messages = {
     consentRequired: PRIVACY_CONSENT.fr.consentRequired,
     errors: {
       validation: "Vérifiez vos informations (courriel, téléphone, services) et réessayez.",
-      smtpConfig: "Impossible d'envoyer votre demande pour le moment. Veuillez nous contacter directement à conciergerie@ir-immigration.com.",
+      smtpConfig: "Impossible d'envoyer votre demande pour le moment. Veuillez nous contacter directement à info@ir-conciergerie.com.",
       smtpSendDev: "Échec de connexion email (identifiants Hostinger ou Resend). Vérifiez la configuration.",
       generic: "Impossible d'envoyer votre demande pour le moment. Veuillez réessayer ou nous contacter directement.",
       email: "Vérifiez votre adresse courriel et réessayez.",

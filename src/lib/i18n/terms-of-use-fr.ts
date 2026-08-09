@@ -18,7 +18,7 @@ export const termsOfUseFr: PrivacyPolicy = {
       title: "2. Identification de l'éditeur",
       paragraphs: [
         "Éditeur : IR Conciergerie / IR Immigration.",
-        "Courriel de contact : conciergerie@ir-immigration.com.",
+        "Courriel de contact : info@ir-conciergerie.com.",
         "Le Site est hébergé par Cloudflare.",
       ],
     },
@@ -108,7 +108,7 @@ export const termsOfUseFr: PrivacyPolicy = {
       title: "14. Protection des renseignements personnels",
       paragraphs: [
         "La collecte, l'utilisation et la communication de vos renseignements personnels sont décrites dans notre politique de confidentialité, accessible à l'adresse /confidentialite. Cette politique fait partie intégrante des présentes Conditions.",
-        "Pour toute question relative à la confidentialité ou pour exercer vos droits, contactez notre personne responsable de la protection des renseignements personnels à conciergerie@ir-immigration.com.",
+        "Pour toute question relative à la confidentialité ou pour exercer vos droits, contactez notre personne responsable de la protection des renseignements personnels à info@ir-conciergerie.com.",
       ],
     },
     {
@@ -129,7 +129,7 @@ export const termsOfUseFr: PrivacyPolicy = {
     {
       title: "17. Contact",
       paragraphs: [
-        "Pour toute question relative aux présentes Conditions, écrivez à conciergerie@ir-immigration.com.",
+        "Pour toute question relative aux présentes Conditions, écrivez à info@ir-conciergerie.com.",
       ],
     },
   ],

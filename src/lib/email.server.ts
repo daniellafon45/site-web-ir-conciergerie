@@ -1,6 +1,6 @@
 import { getEmailEnvAsync } from "./env.server";
 import { isCloudflareWorkersRuntime } from "./runtime.server";
-import { SOUMISSION_CC, SOUMISSION_RECIPIENT } from "./soumission.constants";
+import { SOUMISSION_RECIPIENT } from "./soumission.constants";
 
 export type SoumissionEmailErrorCode = "smtp_config" | "smtp_send";
 
@@ -29,7 +29,7 @@ type SoumissionEmailPayload = {
 type ResendFrom = { email: string; name: string };
 
 const DEFAULT_FROM: ResendFrom = {
-  email: "conciergerie@ir-immigration.com",
+  email: "info@ir-conciergerie.com",
   name: "IR Conciergerie",
 };
 
@@ -157,7 +157,6 @@ async function sendViaResend(
     body: JSON.stringify({
       from,
       to: [SOUMISSION_RECIPIENT],
-      cc: [SOUMISSION_CC],
       reply_to: [replyTo],
       subject,
       html,
@@ -220,7 +219,6 @@ async function sendViaSmtp(data: SoumissionEmailPayload, emailEnv: Record<string
     await transport.sendMail({
       from,
       to: SOUMISSION_RECIPIENT,
-      cc: SOUMISSION_CC,
       replyTo: data.email.trim(),
       subject,
       html,

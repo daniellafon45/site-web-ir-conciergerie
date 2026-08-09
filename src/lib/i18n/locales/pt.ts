@@ -147,7 +147,7 @@ export const pt: Messages = {
     consentRequired: PRIVACY_CONSENT.pt.consentRequired,
     errors: {
       validation: "Verifique os seus dados e tente novamente.",
-      smtpConfig: "Não foi possível enviar o seu pedido. Contacte-nos em conciergerie@ir-immigration.com.",
+      smtpConfig: "Não foi possível enviar o seu pedido. Contacte-nos em info@ir-conciergerie.com.",
       smtpSendDev: "Erro de ligação de e-mail.",
       generic: "Não foi possível enviar o seu pedido. Tente novamente ou contacte-nos.",
       email: "Verifique o seu endereço de e-mail.",

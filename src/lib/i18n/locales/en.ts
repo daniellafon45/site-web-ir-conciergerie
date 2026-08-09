@@ -163,7 +163,7 @@ export const en: Messages = {
     consentRequired: PRIVACY_CONSENT.en.consentRequired,
     errors: {
       validation: "Please check your details (email, phone, services) and try again.",
-      smtpConfig: "Unable to send your request right now. Please contact us at conciergerie@ir-immigration.com.",
+      smtpConfig: "Unable to send your request right now. Please contact us at info@ir-conciergerie.com.",
       smtpSendDev: "Email connection failed. Check Hostinger or Resend configuration.",
       generic: "Unable to send your request right now. Please try again or contact us directly.",
       email: "Please check your email address and try again.",

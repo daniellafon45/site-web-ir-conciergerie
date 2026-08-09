@@ -13,13 +13,13 @@ export const privacyPolicyEn: PrivacyPolicy = {
     {
       title: "1. Data controller",
       paragraphs: [
-        "The site conciergerie.ir-immigration.com is operated by IR Conciergerie, in connection with IR Immigration. For any questions about this policy, contact us at conciergerie@ir-immigration.com.",
+        "The site conciergerie.ir-immigration.com is operated by IR Conciergerie, in connection with IR Immigration. For any questions about this policy, contact us at info@ir-conciergerie.com.",
       ],
     },
     {
       title: "2. Person responsible for the protection of personal information (PRP) — Law 25",
       paragraphs: [
-        "The person responsible for the protection of personal information within our organization can be reached at: conciergerie@ir-immigration.com.",
+        "The person responsible for the protection of personal information within our organization can be reached at: info@ir-conciergerie.com.",
         "They oversee compliance of our practices with Quebec's Act respecting the protection of personal information in the private sector (Law 25) and applicable Canadian laws.",
       ],
     },
@@ -67,7 +67,7 @@ export const privacyPolicyEn: PrivacyPolicy = {
       title: "8. Your rights",
       paragraphs: [
         "Under Law 25, you may request access to your personal information, rectification, deletion where provided by law, limitation of use, or withdraw consent for processing that depends on it.",
-        "To exercise your rights, write to conciergerie@ir-immigration.com. We will respond within the timeframes required by law.",
+        "To exercise your rights, write to info@ir-conciergerie.com. We will respond within the timeframes required by law.",
         "If you believe your rights are not respected, you may file a complaint with the Commission d'accès à l'information du Québec (CAI).",
       ],
     },

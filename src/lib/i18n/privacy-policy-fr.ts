@@ -13,13 +13,13 @@ export const privacyPolicyFr: PrivacyPolicy = {
     {
       title: "1. Responsable du traitement",
       paragraphs: [
-        "Le site conciergerie.ir-immigration.com est exploité par IR Conciergerie, en lien avec IR Immigration. Pour toute question relative à la présente politique, vous pouvez nous joindre à conciergerie@ir-immigration.com.",
+        "Le site conciergerie.ir-immigration.com est exploité par IR Conciergerie, en lien avec IR Immigration. Pour toute question relative à la présente politique, vous pouvez nous joindre à info@ir-conciergerie.com.",
       ],
     },
     {
       title: "2. Personne responsable de la protection des renseignements personnels (PRP) — Loi 25",
       paragraphs: [
-        "La personne responsable de la protection des renseignements personnels au sein de notre organisation est joignable à l'adresse suivante : conciergerie@ir-immigration.com.",
+        "La personne responsable de la protection des renseignements personnels au sein de notre organisation est joignable à l'adresse suivante : info@ir-conciergerie.com.",
         "Elle supervise la conformité de nos pratiques à la Loi sur la protection des renseignements personnels dans le secteur privé (Loi 25) et aux lois applicables au Canada.",
       ],
     },
@@ -67,7 +67,7 @@ export const privacyPolicyFr: PrivacyPolicy = {
       title: "8. Vos droits",
       paragraphs: [
         "Conformément à la Loi 25, vous pouvez demander l'accès à vos renseignements personnels, leur rectification, leur suppression dans les cas prévus par la loi, la limitation de leur utilisation ou retirer votre consentement pour les traitements qui en dépendent.",
-        "Pour exercer vos droits, écrivez à conciergerie@ir-immigration.com. Nous répondrons dans les délais prévus par la loi.",
+        "Pour exercer vos droits, écrivez à info@ir-conciergerie.com. Nous répondrons dans les délais prévus par la loi.",
         "Si vous estimez que vos droits ne sont pas respectés, vous pouvez déposer une plainte auprès de la Commission d'accès à l'information du Québec (CAI).",
       ],
     },
