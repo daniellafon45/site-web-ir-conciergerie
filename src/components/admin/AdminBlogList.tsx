@@ -34,6 +34,12 @@ export function AdminBlogList({ posts }: Props) {
           </div>
           <div className="flex items-center gap-3">
             <Link
+              to="/"
+              className="rounded-full border border-line/50 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-muted hover:text-text"
+            >
+              Page d&apos;accueil
+            </Link>
+            <Link
               to="/admin/blog/new"
               className="rounded-full bg-brand-primary px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white hover:bg-brand-primary/90"
             >
