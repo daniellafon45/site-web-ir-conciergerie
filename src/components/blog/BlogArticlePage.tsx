@@ -9,8 +9,6 @@ import { getBlogUi } from "@/lib/blog/blog-i18n";
 import {
   estimateWordCount,
   formatBlogDate,
-  getAlternatePost,
-  getPostBySlug,
 } from "@/lib/blog/posts";
 import type { BlogPost } from "@/lib/blog/types";
 import { useI18n } from "@/lib/i18n/I18nProvider";
@@ -18,12 +16,13 @@ import { SITE_URL, buildArticlePageJsonLd } from "@/lib/seo";
 
 type BlogArticlePageProps = {
   post: BlogPost;
+  relatedPosts?: BlogPost[];
+  alternate?: BlogPost | null;
 };
 
-export function BlogArticlePage({ post }: BlogArticlePageProps) {
+export function BlogArticlePage({ post, relatedPosts = [], alternate = null }: BlogArticlePageProps) {
   const { locale } = useI18n();
   const ui = getBlogUi(locale);
-  const alternate = getAlternatePost(post);
   const heroSrc = getBlogImage(post.imageKey);
   const canonicalPath = `/blog/${post.slug}`;
   const articleUrl = `${SITE_URL}${canonicalPath}`;
@@ -176,25 +175,21 @@ export function BlogArticlePage({ post }: BlogArticlePageProps) {
           </section>
         )}
 
-        {post.relatedSlugs.length > 0 && (
+        {relatedPosts.length > 0 && (
           <section className="mt-10">
             <h2 className="text-lg font-bold mb-4">{ui.relatedTitle}</h2>
             <ul className="space-y-2">
-              {post.relatedSlugs.map((slug) => {
-                const related = getPostBySlug(slug);
-                if (!related) return null;
-                return (
-                  <li key={slug}>
-                    <Link
-                      to="/blog/$slug"
-                      params={{ slug }}
-                      className="text-sm font-medium text-brand-primary hover:underline"
-                    >
-                      {related.title}
-                    </Link>
-                  </li>
-                );
-              })}
+              {relatedPosts.map((related) => (
+                <li key={related.slug}>
+                  <Link
+                    to="/blog/$slug"
+                    params={{ slug: related.slug }}
+                    className="text-sm font-medium text-brand-primary hover:underline"
+                  >
+                    {related.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </section>
         )}

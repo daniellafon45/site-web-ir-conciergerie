@@ -1,8 +1,8 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
 import { BlogArticlePage } from "@/components/blog/BlogArticlePage";
+import { fetchBlogPost } from "@/lib/api/blog.functions";
 import { getBlogImage } from "@/lib/blog/images";
-import { getPostBySlug } from "@/lib/blog/posts";
 import { SITE_URL } from "@/lib/seo";
 
 function resolveOgImage(image: string) {
@@ -10,10 +10,10 @@ function resolveOgImage(image: string) {
 }
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => {
-    const post = getPostBySlug(params.slug);
-    if (!post) throw notFound();
-    return { post };
+  loader: async ({ params }) => {
+    const data = await fetchBlogPost({ data: { slug: params.slug } });
+    if (!data) throw notFound();
+    return data;
   },
   head: ({ loaderData }) => {
     const post = loaderData?.post;
@@ -41,6 +41,6 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function BlogArticleRoute() {
-  const { post } = Route.useLoaderData();
-  return <BlogArticlePage post={post} />;
+  const { post, related, alternate } = Route.useLoaderData();
+  return <BlogArticlePage post={post} relatedPosts={related} alternate={alternate} />;
 }

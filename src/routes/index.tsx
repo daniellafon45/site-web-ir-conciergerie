@@ -7,9 +7,9 @@ import { HeroCrossfadeVideos } from "@/components/HeroCrossfadeVideos";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { SeoHead } from "@/components/SeoHead";
 import { SiteFloatingNav } from "@/components/SiteFloatingNav";
+import { fetchFeaturedPosts } from "@/lib/api/blog.functions";
 import { getBlogUi } from "@/lib/blog/blog-i18n";
-import { getFeaturedPosts } from "@/lib/blog/posts";
-import type { BlogLocale } from "@/lib/blog/types";
+import type { BlogLocale, BlogPost } from "@/lib/blog/types";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import type { Locale } from "@/lib/i18n/types";
 import { resolveServiceSlugForLocale } from "@/lib/services/pages";
@@ -44,6 +44,13 @@ import serviceTransfertAeroport from "@/assets/service-transfert-aeroport.png";
 import transportEscalade from "@/assets/transport-escalade.png";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const [fr, en] = await Promise.all([
+      fetchFeaturedPosts({ data: { locale: "fr", limit: 3 } }),
+      fetchFeaturedPosts({ data: { locale: "en", limit: 3 } }),
+    ]);
+    return { featuredByLocale: { fr, en } satisfies Record<BlogLocale, BlogPost[]> };
+  },
   head: () => ({
     meta: [
       {
@@ -326,6 +333,7 @@ function ServiceCard({
 
 function Index() {
   const { locale, t } = useI18n();
+  const { featuredByLocale } = Route.useLoaderData();
   const arrivalImg = ARRIVAL_IMAGES[locale] ?? ARRIVAL_IMAGES.en;
   const [activePillar, setActivePillar] = useState(0);
   const [pillarAutoPlay, setPillarAutoPlay] = useState(true);
@@ -336,7 +344,7 @@ function Index() {
   const blogLocale: BlogLocale = locale === "en" ? "en" : "fr";
   const serviceUi = getServiceUi(locale);
   const serviceContentLocale: ServiceLocale = locale === "en" ? "en" : "fr";
-  const featuredPosts = getFeaturedPosts(blogLocale, 3);
+  const featuredPosts = featuredByLocale[blogLocale] ?? featuredByLocale.fr;
 
   const serviceSlug = (cardId: string) => {
     const frSlug = HOME_CARD_SERVICE_SLUGS[cardId];

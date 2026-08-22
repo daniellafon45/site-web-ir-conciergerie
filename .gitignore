@@ -23,6 +23,11 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Local D1 / SQLite blog database
+data/*.sqlite
+data/*.sqlite-*
+!data/.gitkeep
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

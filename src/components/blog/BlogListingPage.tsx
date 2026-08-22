@@ -3,8 +3,7 @@ import { SeoHead } from "@/components/SeoHead";
 import { SiteFloatingNav } from "@/components/SiteFloatingNav";
 import { BlogPostCard } from "@/components/blog/BlogPostCard";
 import { getBlogUi } from "@/lib/blog/blog-i18n";
-import { getPostsForListing } from "@/lib/blog/posts";
-import type { BlogLocale } from "@/lib/blog/types";
+import type { BlogLocale, BlogPost } from "@/lib/blog/types";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import {
   SITE_URL,
@@ -16,11 +15,15 @@ function resolveBlogLocale(siteLocale: string): BlogLocale {
   return siteLocale === "en" ? "en" : "fr";
 }
 
-export function BlogListingPage() {
+type Props = {
+  postsByLocale: Record<BlogLocale, BlogPost[]>;
+};
+
+export function BlogListingPage({ postsByLocale }: Props) {
   const { locale } = useI18n();
   const ui = getBlogUi(locale);
   const blogLocale = resolveBlogLocale(locale);
-  const posts = getPostsForListing(blogLocale);
+  const posts = postsByLocale[blogLocale] ?? postsByLocale.fr;
   const jsonLd = [
     buildBreadcrumbJsonLd([
       { name: "Accueil", url: SITE_URL },

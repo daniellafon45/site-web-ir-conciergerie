@@ -16,7 +16,8 @@
     "format": "prettier --write .",
     "generate:arrival-images": "node scripts/generate-arrival-airport-images.mjs",
     "generate:blog-images": "node scripts/generate-blog-images.mjs",
-    "download:blog-images": "node scripts/download-blog-images.mjs"
+    "download:blog-images": "node scripts/download-blog-images.mjs",
+    "seed:blog": "npx tsx scripts/seed-blog.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -90,6 +91,7 @@
     "nitro": "3.0.260603-beta",
     "prettier": "^3.7.3",
     "sharp": "^0.35.1",
+    "tsx": "^4.23.12",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^7.3.1",
